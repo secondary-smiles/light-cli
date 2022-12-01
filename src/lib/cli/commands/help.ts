@@ -28,10 +28,12 @@ function run() {
             column1 = prefix + command.arg.short + command.arg.long
         }
 
-        let column2 = command.arg.help;
+        const column2 = command.arg.help;
 
         info.log(TAB + bold(column1) + TAB + column2)
     }
+
+    Deno.exit(0)
 }
 
 export function get() {
