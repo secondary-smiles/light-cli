@@ -6,23 +6,41 @@ import {Command} from "./args.ts";
 import {error} from "../util/error.ts";
 
 interface ParsedCli {
-    keyword: string,
+    keyword: string | null,
     args: Array<Array<Command | string>>,
 }
 
 function parseCli(args: Args) {
-        let keyword = parseSite(args['_']);
-        if (keyword instanceof Error) {
+    const parsedArgs = parseArgs(args);
+
+    let keyword: string | Error | null = parseSite(args['_']);
+    let needsKeyword = false;
+
+    parsedArgs.forEach(arg => {
+        if (arg[0].needKeyword) {
+            needsKeyword = true;
+        }
+    })
+
+    if (keyword instanceof Error) {
+        if (needsKeyword) {
             error(keyword.message);
             return;
         }
+    }
 
-        let parsedCli: ParsedCli = {
-            keyword: keyword,
-            args: parseArgs(args)
-        }
+    if (needsKeyword) {
+        keyword = null;
+    } else if (keyword instanceof Error) {
+        keyword = null;
+    }
 
-        return parsedCli;
+    let parsedCli: ParsedCli = {
+        keyword: keyword,
+        args: parsedArgs
+    }
+
+    return parsedCli;
 }
 
 function parseSite(args: Array<string | number>) {
