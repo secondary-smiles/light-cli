@@ -1,5 +1,5 @@
 import {Arg, Command} from "../args.ts";
-import {allCommands} from "./mod.ts"
+import {AllCommands} from "./mod.ts"
 import {info} from "../../util/info.ts";
 import {bold, underline} from "fmt/colors.ts"
 
@@ -17,8 +17,8 @@ function run() {
 
     info.log(bold(underline("Options:")))
 
-    for (const key in allCommands) {
-        let command: Command = allCommands[key];
+    for (const key in AllCommands) {
+        const command: Command = AllCommands[key];
 
         let column1;
         if (command.arg.short && command.arg.long) {
