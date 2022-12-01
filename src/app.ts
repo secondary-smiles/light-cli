@@ -1,4 +1,9 @@
-import {AllCommands} from "./lib/cli/commands/mod.ts";
+import {parse} from "https://deno.land/std@0.167.0/flags/mod.ts";
+import {parseArgs} from "./lib/cli/parse.ts";
+import {info} from "./lib/util/info.ts";
 
-AllCommands.help.run()
-AllCommands.version.run()
+const parsed = parseArgs(parse(Deno.args));
+
+parsed.forEach(c => {
+    c.run();
+})
