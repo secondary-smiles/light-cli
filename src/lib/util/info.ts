@@ -14,7 +14,7 @@ const info = {
     },
 
     error(data: any) {
-        console.warn(bold(red("ERR: ")), data);
+        console.warn(bold(red("ERROR: ")), data);
     }
 }
 
