@@ -7,11 +7,11 @@ import {error} from "../util/error.ts";
 
 interface ParsedCli {
     keyword: string | null,
-    args: Array<Array<Command | string>>,
+    args: Array<[Command, string]>,
 }
 
 function parseCli(args: Args) {
-    const parsedArgs = parseArgs(args);
+    const parsedArgs: Array<[Command, string]> = parseArgs(args);
 
     let keyword: string | Error | null = parseSite(args['_']);
     let needsKeyword = false;
@@ -61,7 +61,7 @@ function parseSite(args: Array<string | number>) {
 
 function parseArgs(args: Args) {
     let firstKey = true;
-    const validCommands = [];
+    const validCommands: Array<[Command, string]> = [];
 
     for (const key in args) {
         if (firstKey) {

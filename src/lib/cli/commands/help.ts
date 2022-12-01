@@ -2,6 +2,7 @@ import {Arg, Command} from "../args.ts";
 import {AllCommands} from "./mod.ts"
 import {info} from "../../util/info.ts";
 import {bold, underline} from "fmt/colors.ts"
+import {ABOUT, USAGE} from "../../../globals.ts";
 
 const args: Arg = {
     name: "Help",
@@ -13,9 +14,12 @@ const args: Arg = {
 function run() {
     const TAB = '  ';
 
-    info.log(bold("NPX for OSes"))
+    info.log(bold(ABOUT));
 
-    info.log(bold(underline("Options:")))
+    info.log(bold(underline("Usage:")));
+    info.log(TAB + USAGE);
+
+    info.log(bold(underline("Options:")));
 
     for (const key in AllCommands) {
         const command: Command = AllCommands[key];
