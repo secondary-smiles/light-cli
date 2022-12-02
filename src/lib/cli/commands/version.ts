@@ -7,7 +7,7 @@ const args: Arg = {
     name: "Version",
     help: "Print version and exit",
     short: "V",
-    long: "version"
+    long: ""
 };
 
 function run() {
