@@ -10,11 +10,8 @@ export class Command {
 
     run: Function;
 
-    needKeyword: boolean
-
-    constructor(arg: Arg, run: Function, needKeyword: boolean) {
+    constructor(arg: Arg, run: Function) {
         this.arg = arg;
         this.run = run;
-        this.needKeyword = needKeyword;
     }
 }

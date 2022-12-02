@@ -41,5 +41,5 @@ function run() {
 }
 
 export function get() {
-    return new Command(args, run, false);
+    return new Command(args, run);
 }

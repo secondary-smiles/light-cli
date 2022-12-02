@@ -4,8 +4,8 @@ import {info} from "../../util/info.ts";
 import {VERSION, NAME} from "../../../globals.ts";
 
 const args: Arg = {
-    name: "Version",
-    help: "Print version and exit",
+    name: "App Version",
+    help: "Print this programs version and exit",
     short: "V",
     long: ""
 };
@@ -17,5 +17,5 @@ function run() {
 }
 
 export function get() {
-    return new Command(args, run, false);
+    return new Command(args, run);
 }
