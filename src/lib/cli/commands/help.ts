@@ -14,11 +14,14 @@ const args: Arg = {
 function run() {
     const TAB = '  ';
 
+    // About
     info.log(bold(ABOUT));
 
+    // Usage
     info.log(bold(underline("Usage:")));
     info.log(TAB + USAGE);
 
+    // Options
     info.log(bold(underline("Options:")));
 
     for (const key in AllCommands) {

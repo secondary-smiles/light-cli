@@ -7,7 +7,7 @@ import {AllCommands} from "./lib/cli/commands/mod.ts";
 function main() {
     let commands = parse(Deno.args);
 
-    AllCommands.help.run()
+    // AllCommands.help.run()
 }
 
 // Begin the program
