@@ -1,17 +1,17 @@
 export interface Arg {
-    name: string;
-    short: string;
-    long: string;
-    help: string;
+  name: string;
+  short: string;
+  long: string;
+  help: string;
 }
 
 export class Command {
-    arg: Arg;
+  arg: Arg;
 
-    run: Function;
+  run: Function;
 
-    constructor(arg: Arg, run: Function) {
-        this.arg = arg;
-        this.run = run;
-    }
+  constructor(arg: Arg, run: Function) {
+    this.arg = arg;
+    this.run = run;
+  }
 }

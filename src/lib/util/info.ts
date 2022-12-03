@@ -1,21 +1,21 @@
-import {blue, yellow, red, bold} from "fmt/colors.ts";
+import { blue, yellow, red, bold } from "fmt/colors.ts";
 
 const info = {
-    log(data: any) {
-        console.log(data);
-    },
+  log(data: any) {
+    console.log(data);
+  },
 
-    info(data: any) {
-        console.info(bold(blue("INFO: ")), data);
-    },
+  info(data: any) {
+    console.info(bold(blue("info: ")), data);
+  },
 
-    warn(data: any) {
-        console.warn(bold(yellow("WARN: ")), data);
-    },
+  warn(data: any) {
+    console.warn(bold(yellow("warn: ")), data);
+  },
 
-    error(data: any) {
-        console.warn(bold(red("ERROR: ")), data);
-    }
-}
+  error(data: any) {
+    console.warn(bold(red("error: ")), data);
+  },
+};
 
-export {info}
+export { info };
