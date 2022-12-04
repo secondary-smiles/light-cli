@@ -1,12 +1,17 @@
-import { parseArgs } from "./lib/cli/parseArgs.ts";
+import { AppCommand, parseArgs } from "./lib/cli/parseArgs.ts";
 import { AllCommands } from "./lib/cli/commands/mod.ts";
 import { info } from "./lib/util/info.ts";
 
 function main() {
-  let program = parseArgs(Deno.args);
-  info.log(program);
+  const program = parseArgs(Deno.args);
 
-  // AllCommands.help.run()
+  runCommands(program.appCommands);
+}
+
+function runCommands(commands: AppCommand[]) {
+  commands.forEach((command) => {
+    command.command.run(command.arg);
+  });
 }
 
 // Begin the program

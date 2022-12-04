@@ -5,6 +5,11 @@ import { AllCommands } from "./commands/mod.ts";
 import { Command } from "./args.ts";
 import { error } from "../util/error.ts";
 
+export interface AppCommand  {
+  command: Command,
+  arg: string | boolean | number,
+}
+
 interface ProgramArgs {
   source: string;
   commands: string[];
@@ -12,7 +17,7 @@ interface ProgramArgs {
 
 interface AppArgs {
   programArgs: ProgramArgs | null;
-  appCommands: Command[];
+  appCommands: AppCommand[];
 }
 
 interface SplitArgs {
@@ -73,7 +78,7 @@ function separateArgs(args: string[]) {
 }
 
 function getCommandsFromArgs(args: Args) {
-  const parsedCommands: Command[] = [];
+  const parsedCommands: AppCommand[] = [];
 
   for (const key in args) {
     let validKey = false;
@@ -86,7 +91,11 @@ function getCommandsFromArgs(args: Args) {
       const command = AllCommands[commandKey];
 
       if (key === command.arg.short || key === command.arg.long) {
-        parsedCommands.push(command);
+        const appCommand: AppCommand = {
+          command: command,
+          arg: args[key]
+        }
+        parsedCommands.push(appCommand);
         validKey = true;
       }
     }
