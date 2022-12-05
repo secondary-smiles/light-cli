@@ -4,15 +4,17 @@ import { PREFIX } from "../../globals.ts";
 import { AllCommands } from "./commands/mod.ts";
 import { Command } from "./args.ts";
 import { error } from "../util/error.ts";
+import { info } from "../util/info.ts";
 
-export interface AppCommand  {
-  command: Command,
-  arg: string | boolean | number,
+export interface AppCommand {
+  command: Command;
+  arg: string | boolean | number;
 }
 
 export interface ProgramArgs {
   source: string;
-  commands: string[];
+  program: string;
+  args: string[];
 }
 
 interface AppArgs {
@@ -54,27 +56,23 @@ function separateArgs(args: string[]) {
     }
   });
 
-  if (programArgsList.length > 0) {
-    const keyword = programArgsList[0].slice(1);
-    const programArgs: ProgramArgs = {
-      source: keyword,
-      commands: programArgsList.slice(1),
+  let programArgs: ProgramArgs | null = null;
+  if (programArgsList.length >= 2) {
+    const source = programArgsList[0].slice(1);
+    const program = programArgsList[1];
+    const sourceProgramArgsList = programArgsList.slice(2);
+
+    programArgs = {
+      source: source,
+      program: program,
+      args: sourceProgramArgsList,
     };
-
-    if (programArgs.commands.length < 1) {
-      error(new Error(`source '${programArgs.source}' provided without command to run`));
-    }
-
-    const splitArgs: SplitArgs = {
-      programArgs: programArgs,
-      appArgs: appArgs,
-    };
-
-    return splitArgs;
+  } else if (programArgsList.length > 0) {
+    error(new Error(`source '${programArgsList[0].slice(1)}' requires source program`))
   }
 
   const splitArgs: SplitArgs = {
-    programArgs: null,
+    programArgs: programArgs,
     appArgs: appArgs,
   };
 
@@ -97,8 +95,8 @@ function getCommandsFromArgs(args: Args) {
       if (key === command.arg.short || key === command.arg.long) {
         const appCommand: AppCommand = {
           command: command,
-          arg: args[key]
-        }
+          arg: args[key],
+        };
         parsedCommands.push(appCommand);
         validKey = true;
       }
