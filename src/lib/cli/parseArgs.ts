@@ -61,6 +61,10 @@ function separateArgs(args: string[]) {
       commands: programArgsList.slice(1),
     };
 
+    if (programArgs.commands.length < 1) {
+      error(new Error(`source '${programArgs.source}' provided without command to run`));
+    }
+
     const splitArgs: SplitArgs = {
       programArgs: programArgs,
       appArgs: appArgs,

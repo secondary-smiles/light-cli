@@ -1,8 +1,8 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
-import { info } from "../util/info.ts";
+import {info} from "../util/info.ts";
 
 function resolveSource(args: ProgramArgs) {
-  // info.info(args);
+    info.info(args.source)
 }
 
 export { resolveSource };
