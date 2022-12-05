@@ -16,9 +16,9 @@ function resolveSource(args: ProgramArgs) {
 // light.{{source}}/action.toml
 // {{source}}/light/action.toml
 async function getActionFile(source: string) {
-  const url = getUrl(source);
-
-  info.info(url);
+  const urlGroup = getUrl(source);
+  const data = await getActionFileFromUrlGroup(urlGroup);
+  info.log(data);
 }
 
 function getUrl(source: string) {
@@ -28,8 +28,8 @@ function getUrl(source: string) {
 
   const postSourceUrlString = `https://${source}/${NAME}/${ACTION}`;
   const preSourceUrlString = `https://${NAME}.${source}/${ACTION}`;
-  const postUrl = checkDomain(preSourceUrlString);
-  const preUrl = checkDomain(postSourceUrlString);
+  const preUrl = checkDomain(preSourceUrlString);
+  const postUrl = checkDomain(postSourceUrlString);
 
   if (!preUrl && !postUrl) {
     error(new Error(`${source} could not be parsed as URL`));
@@ -51,6 +51,32 @@ function checkDomain(source: string) {
     info.warn(e.message);
   }
   return url;
+}
+
+async function getActionFileFromUrlGroup(urlGroup: UrlGroup) {
+  const promises = [];
+  if (urlGroup.preUrl) {
+    promises.push(fetchWrapper(urlGroup.preUrl));
+  }
+
+  if (urlGroup.postUrl) {
+    promises.push(fetchWrapper(urlGroup.postUrl));
+  }
+
+  const data = await Promise.any(promises).catch(err => {
+    error(new Error(`could not fetch action.toml, try making sure '${urlGroup.postUrl?.hostname}' is a valid source`));
+  })
+
+  return data
+}
+
+async function fetchWrapper(url: URL) {
+  const res = await fetch(url).catch(err => {
+    return Promise.reject(err);
+  });
+
+  // Returns a promise
+  return res.text();
 }
 
 export { resolveSource };
