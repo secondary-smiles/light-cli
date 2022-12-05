@@ -10,7 +10,7 @@ export interface AppCommand  {
   arg: string | boolean | number,
 }
 
-interface ProgramArgs {
+export interface ProgramArgs {
   source: string;
   commands: string[];
 }
@@ -101,7 +101,7 @@ function getCommandsFromArgs(args: Args) {
     }
 
     if (!validKey) {
-      error(new Error(`Argument '${key}' not valid in this context`));
+      error(new Error(`argument '${key}' not valid in this context`));
     }
   }
 
