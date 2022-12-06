@@ -1,5 +1,7 @@
 import { ProgramAction } from "./toml.ts";
 import { COMMANDS, INTERPOLATES } from "../../globals.ts";
+import {genBinloc} from "../util/path.ts";
+import {ProgramArgs} from "../cli/parseArgs.ts";
 
 function interpolateVersion(toml: ProgramAction) {
   // Conditions
@@ -26,9 +28,10 @@ function interpolateVersion(toml: ProgramAction) {
   return toml;
 }
 
-function interpolateBinloc(toml: ProgramAction) {
+function interpolateBinloc(toml: ProgramAction, program: ProgramArgs) {
   // Binloc is the location of the binary. Probably something like `light/{{source}}/bin/{{program_name}}
   // TODO: Create resolveBinloc function
+  INTERPOLATES.binloc = genBinloc(toml, program);
 
   toml.source = toml.source.split("{{binloc}}").join(INTERPOLATES.binloc);
 

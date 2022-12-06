@@ -7,6 +7,8 @@ import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
+import { genBinloc } from "./lib/util/path.ts";
+import {INTERPOLATES} from "./globals.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -17,10 +19,11 @@ async function main() {
 
     let commandToml = findProgram(toml, program.programArgs);
 
+    INTERPOLATES.binloc = genBinloc(commandToml, program.programArgs);
     commandToml = interpolateVersion(commandToml);
-    commandToml = interpolateBinloc(commandToml);
+    commandToml = interpolateBinloc(commandToml, program.programArgs);
 
-    info.log(commandToml);
+    info.log(commandToml)
   }
 }
 
