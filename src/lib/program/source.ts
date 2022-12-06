@@ -29,7 +29,8 @@ async function getActionFile(source: string) {
 
   const toml: Action | unknown = parseToTOML(data);
   const isValidToml = validAction(toml);
-  if (!isValidToml) {
+
+  if (isValidToml instanceof Error) {
     error(isValidToml);
   }
 
@@ -114,7 +115,7 @@ async function textFetchWrapper(url: URL) {
   });
 
   if (!res.ok) {
-    return Promise.reject('invalid server response')
+    return Promise.reject("invalid server response");
   }
 
   // Returns a promise

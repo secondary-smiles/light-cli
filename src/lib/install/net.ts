@@ -2,6 +2,7 @@ import { ensureFile } from "fs/mod.ts";
 import { checkDomain } from "../program/source.ts";
 import { error } from "../util/error.ts";
 import { INTERPOLATES } from "../../globals.ts";
+import {info} from "../util/info.ts";
 
 async function getSourceFromWeb(source: string) {
   const url = checkDomain(source);
@@ -24,7 +25,14 @@ async function getSourceFromWeb(source: string) {
 
   await res.body?.pipeTo(file.writable);
 
-  return file;
+  try {
+    file.close()
+  } catch (err) {
+    // discard error for now TODO
+    // info.warn(err)
+  }
+
+  return fileLoc;
 }
 
 export { getSourceFromWeb };

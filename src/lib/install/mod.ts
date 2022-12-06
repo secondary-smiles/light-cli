@@ -3,10 +3,12 @@ import { AppArgs } from "../cli/parseArgs.ts";
 import { getSourceFromWeb } from "./net.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import { genSourceLoc } from "../util/file.ts";
+import {decompress} from "./compress.ts";
 
-function install(toml: ProgramAction, program: AppArgs) {
+async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
-  const source = getSourceFromWeb(toml.source);
+  const fileloc = await getSourceFromWeb(toml.source);
+  const decompressedFile = await decompress(fileloc);
 }
 
 export { install };

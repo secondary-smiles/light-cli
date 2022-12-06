@@ -27,7 +27,7 @@ async function main() {
 
     toml.provides[command.index] = command.toml;
 
-    install(command.toml, program);
+    await install(command.toml, program);
   }
 }
 
@@ -63,4 +63,4 @@ function findProgram(
 }
 
 // Begin the program
-main().catch((err) => error(new Error(err)));
+await main()

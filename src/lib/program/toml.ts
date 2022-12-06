@@ -5,6 +5,7 @@ export interface Action {
 export interface ProgramAction {
   name: string;
   source: string;
+  compress: string;
   dyn_version: boolean;
   def_ver: string;
   install: ProgramInstall;
@@ -20,14 +21,17 @@ function validAction(action: any) {
     return new Error(`'provides' list not specified`);
   }
 
+  let returnVal: boolean | Error = true;
+
   action.provides.forEach((program: ProgramAction) => {
     const valid = validProgramAction(program);
-    if (!valid) {
-      return new Error(`program invalid: ${valid}`);
+
+    if (valid instanceof Error) {
+      returnVal =  new Error(`program invalid: ${valid.message}`);
     }
   });
 
-  return true;
+  return returnVal;
 }
 
 function validProgramAction(program: ProgramAction) {
@@ -47,9 +51,13 @@ function validProgramAction(program: ProgramAction) {
     return new Error(`source not specified`);
   }
 
+  if (!program.compress) {
+    return new Error(`compress not specified`)
+  }
+
   const isValidInstall = validInstall(program.install);
-  if (!isValidInstall) {
-    return new Error(`invalid install: ${isValidInstall}`);
+  if (isValidInstall instanceof Error) {
+    return new Error(`invalid install: ${isValidInstall.message}`);
   }
 
   return true;
