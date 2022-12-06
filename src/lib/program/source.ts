@@ -1,15 +1,19 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
-import { ACTION, NAME, TIMEOUT } from "../../globals.ts";
+import { ACTION, INTERPOLATES, NAME, TIMEOUT } from "../../globals.ts";
+
+import { parse as parseToTOML } from "encoding/toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
   postUrl?: URL;
 }
 
-function resolveSource(args: ProgramArgs) {
-  getActionFile(args.source);
+async function resolveSource(args: ProgramArgs) {
+  return await getActionFile(args.source).catch((err) => {
+    error(err);
+  });
 }
 
 // CHECKS:
@@ -17,11 +21,13 @@ function resolveSource(args: ProgramArgs) {
 // {{source}}/light/action.toml
 async function getActionFile(source: string) {
   const urlGroup = getUrl(source);
-  const data = await getActionFileFromUrlGroup(urlGroup);
+  let data = await getActionFileFromUrlGroup(urlGroup);
 
-  info.log(data);
   // Timout requests now that we have our data
   dispatchEvent(new Event("timeout"));
+
+  data = resolveInterpolates(data);
+  return parseToTOML(data);
 }
 
 function getUrl(source: string) {
@@ -95,6 +101,13 @@ async function fetchWrapper(url: URL) {
 
   // Returns a promise
   return res.text();
+}
+
+function resolveInterpolates(data: string) {
+  data = data.split("{{version}}").join(INTERPOLATES.version);
+  data = data.split("{{binloc}}").join(INTERPOLATES.binloc);
+
+  return data;
 }
 
 export { resolveSource };

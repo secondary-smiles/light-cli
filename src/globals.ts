@@ -7,3 +7,8 @@ export const PREFIX = '+';
 export const USAGE  = `${(NAME)} [${bold("FLAGS")}] ${brightGreen(PREFIX)}<${bold("SOURCE")}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
 export const ACTION = "action.toml";
 export const TIMEOUT = 6000;
+
+export let INTERPOLATES = {
+    version: "0.0.0",
+    binloc: "path/to/binloc"
+};

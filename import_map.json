@@ -1,6 +1,7 @@
 {
   "imports": {
     "fmt/": "https://deno.land/std@0.167.0/fmt/",
-    "flags/": "https://deno.land/std@0.167.0/flags/"
+    "flags/": "https://deno.land/std@0.167.0/flags/",
+    "encoding/": "https://deno.land/std@0.167.0/encoding/"
   }
 }

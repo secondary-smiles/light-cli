@@ -1,12 +1,16 @@
 import { AppCommand, parseArgs } from "./lib/cli/parseArgs.ts";
 import { resolveSource } from "./lib/program/source.ts";
+import { info } from "./lib/util/info.ts";
+import { error } from "./lib/util/error.ts";
 
-function main() {
+async function main() {
   const program = parseArgs(Deno.args);
 
   runCommands(program.appCommands);
   if (program.programArgs) {
-    resolveSource(program.programArgs);
+    const data = await resolveSource(program.programArgs);
+
+    info.log(data);
   }
 }
 
@@ -17,4 +21,4 @@ function runCommands(commands: AppCommand[]) {
 }
 
 // Begin the program
-main();
+main().catch((err) => error(new Error(err)));
