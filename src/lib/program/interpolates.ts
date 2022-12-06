@@ -26,4 +26,21 @@ function interpolateVersion(toml: ProgramAction) {
   return toml;
 }
 
-export { interpolateVersion };
+function interpolateBinloc(toml: ProgramAction) {
+  // Binloc is the location of the binary. Probably something like `light/{{source}}/bin/{{program_name}}
+  // TODO: Create resolveBinloc function
+
+  toml.source = toml.source.split("{{binloc}}").join(INTERPOLATES.binloc);
+
+  toml.install.cmd = toml.install.cmd
+    .split("{{binloc}}")
+    .join(INTERPOLATES.binloc);
+
+  toml.install.test = toml.install.test
+    .split("{{binloc}}")
+    .join(INTERPOLATES.binloc);
+
+  return toml;
+}
+
+export { interpolateVersion, interpolateBinloc };

@@ -2,8 +2,11 @@ import { AppCommand, parseArgs, ProgramArgs } from "./lib/cli/parseArgs.ts";
 import { resolveSource } from "./lib/program/source.ts";
 import { info } from "./lib/util/info.ts";
 import { error } from "./lib/util/error.ts";
-import {Action, ProgramAction, validAction} from "./lib/program/toml.ts";
-import {interpolateVersion} from "./lib/program/interpolates.ts";
+import { Action, ProgramAction, validAction } from "./lib/program/toml.ts";
+import {
+  interpolateVersion,
+  interpolateBinloc,
+} from "./lib/program/interpolates.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -15,6 +18,7 @@ async function main() {
     let commandToml = findProgram(toml, program.programArgs);
 
     commandToml = interpolateVersion(commandToml);
+    commandToml = interpolateBinloc(commandToml);
 
     info.log(commandToml);
   }
