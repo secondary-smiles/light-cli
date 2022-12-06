@@ -15,12 +15,12 @@ export interface ProgramInstall {
   test: string;
 }
 
-function validAction(action: Action) {
+function validAction(action: any) {
   if (!action.provides) {
     return new Error(`'provides' list not specified`);
   }
 
-  action.provides.forEach((program) => {
+  action.provides.forEach((program: ProgramAction) => {
     const valid = validProgramAction(program);
     if (!valid) {
       return new Error(`program invalid: ${valid}`);

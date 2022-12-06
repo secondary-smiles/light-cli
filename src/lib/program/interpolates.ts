@@ -28,10 +28,9 @@ function interpolateVersion(toml: ProgramAction) {
   return toml;
 }
 
-function interpolateBinloc(toml: ProgramAction, program: ProgramArgs) {
+function interpolateBinloc(toml: ProgramAction) {
   // Binloc is the location of the binary. Probably something like `light/{{source}}/bin/{{program_name}}
-  // TODO: Create resolveBinloc function
-  INTERPOLATES.binloc = genBinloc(toml, program);
+  INTERPOLATES.binloc = genBinloc(toml);
 
   toml.source = toml.source.split("{{binloc}}").join(INTERPOLATES.binloc);
 

@@ -4,7 +4,7 @@ import { error } from "../util/error.ts";
 import { ACTION, NAME, TIMEOUT } from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
-import {Action, validAction} from "./toml.ts";
+import { Action, validAction } from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -27,13 +27,21 @@ async function getActionFile(source: string) {
   // Timout requests now that we have our data
   dispatchEvent(new Event("textFetchTimeout"));
 
-  const toml: Action = parseToTOML(data);
+  const toml: Action | unknown = parseToTOML(data);
   const isValidToml = validAction(toml);
   if (!isValidToml) {
     error(isValidToml);
   }
 
+  if (!instanceOfAction(toml)) {
+    error(new Error("toml critical parse failure"));
+  }
+
   return toml;
+}
+
+function instanceOfAction(object: any): object is Action {
+  return "provides" in object;
 }
 
 function getUrl(source: string) {

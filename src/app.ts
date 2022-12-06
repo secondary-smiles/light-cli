@@ -23,11 +23,11 @@ async function main() {
     };
 
     command.toml = interpolateVersion(command.toml);
-    command.toml = interpolateBinloc(command.toml, program.programArgs);
+    command.toml = interpolateBinloc(command.toml);
 
     toml.provides[command.index] = command.toml;
 
-    install(toml, program);
+    install(command.toml, program);
   }
 }
 
@@ -43,7 +43,7 @@ function findProgram(
 ): [ProgramAction, number] {
   let commandToml: ProgramAction | null = null;
 
-  let index;
+  let index: number | null = null;
   toml.provides!.forEach((item, i) => {
     if (item.name === program.program) {
       commandToml = item;
@@ -51,7 +51,7 @@ function findProgram(
     }
   });
 
-  if (!commandToml || !index) {
+  if (!commandToml || typeof index !== "number") {
     error(
       new Error(
         `'${program.source}' does not provide program '${program.program}'`

@@ -12,6 +12,7 @@ export const TIMEOUT = 6000;
 export const INTERPOLATES = {
   version: "",
   binloc: "",
+  final_binloc: "",
 };
 
 interface Commands {
