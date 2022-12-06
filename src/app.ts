@@ -10,7 +10,7 @@ async function main() {
   if (program.programArgs) {
     const data = await resolveSource(program.programArgs);
 
-    info.log(data);
+    // info.log(data);
   }
 }
 

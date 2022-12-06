@@ -1,5 +1,6 @@
 import { Arg, Command } from "../args.ts";
 import { info } from "../../util/info.ts";
+import {COMMANDS} from "../../../globals.ts";
 
 const args: Arg = {
   name: "Destroy",
@@ -9,7 +10,7 @@ const args: Arg = {
 };
 
 function run() {
-  info.info("TODO: Implement");
+  COMMANDS.destroy = true;
 }
 
 export function get() {

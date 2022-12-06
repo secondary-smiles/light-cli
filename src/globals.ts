@@ -12,3 +12,8 @@ export let INTERPOLATES = {
     version: "0.0.0",
     binloc: "path/to/binloc"
 };
+
+export let COMMANDS = {
+    destroy: false,
+    version: null,
+}

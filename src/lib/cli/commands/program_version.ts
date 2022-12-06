@@ -1,5 +1,7 @@
 import { Arg, Command } from "../args.ts";
-import { info } from "../../util/info.ts";
+import { COMMANDS } from "../../../globals.ts";
+import { getSemver, Semver } from "../../util/semver.ts";
+import {error} from "../../util/error.ts";
 
 const args: Arg = {
   name: "Program Version",
@@ -9,8 +11,11 @@ const args: Arg = {
 };
 
 function run(data: string) {
-  info.info("TODO: Implement");
-  info.info("Passed " + data);
+  if (typeof data !== 'string') {
+    error(new Error("invalid version passed"))
+  }
+
+  COMMANDS.version = getSemver(data);
 }
 
 export function get() {

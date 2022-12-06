@@ -2,6 +2,7 @@ import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
 import { ACTION, INTERPOLATES, NAME, TIMEOUT } from "../../globals.ts";
+import {interpolateVersion} from "./interpolates.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
 
@@ -104,6 +105,7 @@ async function fetchWrapper(url: URL) {
 }
 
 function resolveInterpolates(data: string) {
+  data = interpolateVersion(data);
   data = data.split("{{version}}").join(INTERPOLATES.version);
   data = data.split("{{binloc}}").join(INTERPOLATES.binloc);
 
