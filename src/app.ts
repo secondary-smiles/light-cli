@@ -8,7 +8,7 @@ async function main() {
 
   runCommands(program.appCommands);
   if (program.programArgs) {
-    const data = await resolveSource(program.programArgs);
+    resolveSource(program.programArgs);
 
     // info.log(data);
   }

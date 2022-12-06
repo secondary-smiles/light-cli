@@ -2,9 +2,10 @@ import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
 import { ACTION, INTERPOLATES, NAME, TIMEOUT } from "../../globals.ts";
-import {interpolateVersion} from "./interpolates.ts";
+import { interpolateVersion } from "./interpolates.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
+import { Action } from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -27,8 +28,16 @@ async function getActionFile(source: string) {
   // Timout requests now that we have our data
   dispatchEvent(new Event("timeout"));
 
-  data = resolveInterpolates(data);
-  return parseToTOML(data);
+  const rawToml = parseToTOML(data);
+  if (!rawToml.provides) {
+    error(new Error("invalid toml"));
+  }
+
+  let toml: Action = rawToml;
+
+  toml = resolveInterpolates(toml);
+
+  return toml;
 }
 
 function getUrl(source: string) {
@@ -104,12 +113,12 @@ async function fetchWrapper(url: URL) {
   return res.text();
 }
 
-function resolveInterpolates(data: string) {
-  data = interpolateVersion(data);
-  data = data.split("{{version}}").join(INTERPOLATES.version);
-  data = data.split("{{binloc}}").join(INTERPOLATES.binloc);
+function resolveInterpolates(toml: Action) {
+  toml = interpolateVersion(toml);
+  // data = data.split("{{version}}").join(INTERPOLATES.version);
+  // data = data.split("{{binloc}}").join(INTERPOLATES.binloc);
 
-  return data;
+  return toml;
 }
 
 export { resolveSource };
