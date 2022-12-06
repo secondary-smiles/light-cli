@@ -1,8 +1,7 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
-import { ACTION, INTERPOLATES, NAME, TIMEOUT } from "../../globals.ts";
-import { interpolateVersion } from "./interpolates.ts";
+import { ACTION, NAME, TIMEOUT } from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
 import {Action, validAction} from "./toml.ts";
@@ -23,7 +22,7 @@ async function resolveSource(args: ProgramArgs) {
 // {{source}}/light/action.toml
 async function getActionFile(source: string) {
   const urlGroup = getUrl(source);
-  let data = await getActionFileFromUrlGroup(urlGroup);
+  const data = await getActionFileFromUrlGroup(urlGroup);
 
   // Timout requests now that we have our data
   dispatchEvent(new Event("textFetchTimeout"));
@@ -110,4 +109,4 @@ async function textFetchWrapper(url: URL) {
   return res.text();
 }
 
-export { resolveSource };
+export { resolveSource, checkDomain };

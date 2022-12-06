@@ -1,14 +1,12 @@
 import { AppCommand, parseArgs, ProgramArgs } from "./lib/cli/parseArgs.ts";
 import { resolveSource } from "./lib/program/source.ts";
-import { info } from "./lib/util/info.ts";
 import { error } from "./lib/util/error.ts";
-import { Action, ProgramAction, validAction } from "./lib/program/toml.ts";
+import { Action, ProgramAction } from "./lib/program/toml.ts";
+import { install } from "./lib/install/mod.ts";
 import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
-import { genBinloc } from "./lib/util/file.ts";
-import {INTERPOLATES} from "./globals.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -17,13 +15,19 @@ async function main() {
   if (program.programArgs) {
     const toml = await resolveSource(program.programArgs);
 
-    let commandToml = findProgram(toml, program.programArgs);
+    const foundProgram = findProgram(toml, program.programArgs);
 
-    INTERPOLATES.binloc = genBinloc(commandToml, program.programArgs);
-    commandToml = interpolateVersion(commandToml);
-    commandToml = interpolateBinloc(commandToml, program.programArgs);
+    const command = {
+      toml: foundProgram[0],
+      index: foundProgram[1],
+    };
 
-    info.log(commandToml)
+    command.toml = interpolateVersion(command.toml);
+    command.toml = interpolateBinloc(command.toml, program.programArgs);
+
+    toml.provides[command.index] = command.toml;
+
+    install(toml, program);
   }
 }
 
@@ -33,15 +37,21 @@ function runCommands(commands: AppCommand[]) {
   });
 }
 
-function findProgram(toml: Action, program: ProgramArgs): ProgramAction {
+function findProgram(
+  toml: Action,
+  program: ProgramArgs
+): [ProgramAction, number] {
   let commandToml: ProgramAction | null = null;
-  toml.provides!.forEach((item) => {
+
+  let index;
+  toml.provides!.forEach((item, i) => {
     if (item.name === program.program) {
       commandToml = item;
+      index = i;
     }
   });
 
-  if (!commandToml) {
+  if (!commandToml || !index) {
     error(
       new Error(
         `'${program.source}' does not provide program '${program.program}'`
@@ -49,7 +59,7 @@ function findProgram(toml: Action, program: ProgramArgs): ProgramAction {
     );
   }
 
-  return commandToml;
+  return [commandToml, index];
 }
 
 // Begin the program

@@ -17,7 +17,7 @@ export interface ProgramArgs {
   args: string[];
 }
 
-interface AppArgs {
+export interface AppArgs {
   programArgs: ProgramArgs | null;
   appCommands: AppCommand[];
 }

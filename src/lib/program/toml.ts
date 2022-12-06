@@ -1,5 +1,5 @@
 export interface Action {
-  provides?: ProgramAction[];
+  provides: ProgramAction[];
 }
 
 export interface ProgramAction {
