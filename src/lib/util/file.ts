@@ -16,4 +16,11 @@ function genFinalBinloc(toml: ProgramAction, program: ProgramArgs) {
   return home + postfix;
 }
 
-export { genBinloc, genFinalBinloc };
+function genSourceLoc(toml: ProgramAction) {
+  const home = Deno.env.get("HOME");
+  const postfix = `/.${NAME}/${NAME}/d/${toml.name}/raw`;
+
+  return home + postfix;
+}
+
+export { genBinloc, genFinalBinloc, genSourceLoc };

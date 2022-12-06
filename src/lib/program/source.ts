@@ -113,6 +113,10 @@ async function textFetchWrapper(url: URL) {
     return Promise.reject(err);
   });
 
+  if (!res.ok) {
+    return Promise.reject('invalid server response')
+  }
+
   // Returns a promise
   return res.text();
 }
