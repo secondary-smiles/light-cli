@@ -2,7 +2,8 @@ import { AppCommand, parseArgs, ProgramArgs } from "./lib/cli/parseArgs.ts";
 import { resolveSource } from "./lib/program/source.ts";
 import { info } from "./lib/util/info.ts";
 import { error } from "./lib/util/error.ts";
-import { Action, ProgramAction } from "./lib/program/toml.ts";
+import {Action, ProgramAction, validAction} from "./lib/program/toml.ts";
+import {interpolateVersion} from "./lib/program/interpolates.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -11,8 +12,9 @@ async function main() {
   if (program.programArgs) {
     const toml = await resolveSource(program.programArgs);
 
-    const commandToml = findProgram(toml, program.programArgs);
-    info.info(commandToml);
+    let commandToml = findProgram(toml, program.programArgs);
+
+    commandToml = interpolateVersion(commandToml);
   }
 }
 
@@ -22,7 +24,7 @@ function runCommands(commands: AppCommand[]) {
   });
 }
 
-function findProgram(toml: Action, program: ProgramArgs) {
+function findProgram(toml: Action, program: ProgramArgs): ProgramAction {
   let commandToml: ProgramAction | null = null;
   toml.provides!.forEach((item) => {
     if (item.name === program.program) {

@@ -5,7 +5,7 @@ import { ACTION, INTERPOLATES, NAME, TIMEOUT } from "../../globals.ts";
 import { interpolateVersion } from "./interpolates.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
-import { Action } from "./toml.ts";
+import {Action, validAction} from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -28,12 +28,11 @@ async function getActionFile(source: string) {
   // Timout requests now that we have our data
   dispatchEvent(new Event("timeout"));
 
-  const rawToml = parseToTOML(data);
-  if (!rawToml.provides) {
-    error(new Error("invalid toml"));
+  const toml: Action = parseToTOML(data);
+  const isValidToml = validAction(toml);
+  if (!isValidToml) {
+    error(isValidToml);
   }
-
-  const toml: Action = rawToml;
 
   return toml;
 }

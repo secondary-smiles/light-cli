@@ -1,14 +1,21 @@
-import { parse as parseToTOML } from "encoding/toml.ts";
-
-import {COMMANDS, INTERPOLATES} from "../../globals.ts";
-import { Action } from "./toml.ts";
+import { ProgramAction } from "./toml.ts";
 import { info } from "../util/info.ts";
-import { error } from "../util/error.ts";
+import { COMMANDS, INTERPOLATES } from "../../globals.ts";
 
-function interpolateVersion(toml: Action) {
-  toml.provides!.forEach(program => {
-    info.info(program);
-  })
+function interpolateVersion(toml: ProgramAction) {
+  // Conditions
+  // dyn_ver && custom version set custom
+  // dyn_ver && !custom version set default
+  // !dyn_ver set default
+
+  info.warn(toml)
+  if (toml.dyn_version && COMMANDS.version) {
+    INTERPOLATES.version = COMMANDS.version.toString();
+  } else {
+    INTERPOLATES.version = toml.def_ver;
+  }
+
+  info.info(INTERPOLATES.version)
 }
 
 export { interpolateVersion };

@@ -12,7 +12,24 @@ export class Semver {
   }
 
   toString() {
+    console.log(this);
     return `${this.major}.${this.minor}.${this.patch}`;
+  }
+
+  valid() {
+    if (isNaN(this.major)) {
+      return false;
+    }
+
+    if (isNaN(this.minor)) {
+      return false;
+    }
+
+    if (isNaN(this.patch)) {
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -23,17 +40,16 @@ function getSemver(data: string) {
     error(new Error(`'${data}' cannot be parsed as semver`));
   }
 
-  const version: Semver = {
-    major: parseInt(parts[0], 10),
-    minor: parseInt(parts[1], 10),
-    patch: parseInt(parts[2], 10),
-  };
+  const version: Semver = new Semver(
+    parseInt(parts[0], 10),
+    parseInt(parts[1], 10),
+    parseInt(parts[2], 10)
+  );
 
-  if (!version.major || !version.minor || !version.patch) {
+  if (!version.valid()) {
     error(new Error(`'${data}' cannot be parsed as semver`));
   }
 
-  console.log(version);
   return version;
 }
 

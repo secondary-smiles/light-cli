@@ -1,7 +1,7 @@
 import { Arg, Command } from "../args.ts";
-import { COMMANDS } from "../../../globals.ts";
+import { COMMANDS, INTERPOLATES } from "../../../globals.ts";
 import { getSemver, Semver } from "../../util/semver.ts";
-import {error} from "../../util/error.ts";
+import { error } from "../../util/error.ts";
 
 const args: Arg = {
   name: "Program Version",
@@ -11,8 +11,8 @@ const args: Arg = {
 };
 
 function run(data: string) {
-  if (typeof data !== 'string') {
-    error(new Error("invalid version passed"))
+  if (typeof data !== "string") {
+    error(new Error("invalid version passed"));
   }
 
   COMMANDS.version = getSemver(data);
