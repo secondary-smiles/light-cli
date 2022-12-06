@@ -33,9 +33,7 @@ async function getActionFile(source: string) {
     error(new Error("invalid toml"));
   }
 
-  let toml: Action = rawToml;
-
-  toml = resolveInterpolates(toml);
+  const toml: Action = rawToml;
 
   return toml;
 }
@@ -111,14 +109,6 @@ async function fetchWrapper(url: URL) {
 
   // Returns a promise
   return res.text();
-}
-
-function resolveInterpolates(toml: Action) {
-  toml = interpolateVersion(toml);
-  // data = data.split("{{version}}").join(INTERPOLATES.version);
-  // data = data.split("{{binloc}}").join(INTERPOLATES.binloc);
-
-  return toml;
 }
 
 export { resolveSource };
