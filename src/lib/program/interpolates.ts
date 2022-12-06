@@ -1,6 +1,6 @@
 import { ProgramAction } from "./toml.ts";
 import { COMMANDS, INTERPOLATES } from "../../globals.ts";
-import {genBinloc} from "../util/path.ts";
+import {genBinloc} from "../util/file.ts";
 import {ProgramArgs} from "../cli/parseArgs.ts";
 
 function interpolateVersion(toml: ProgramAction) {

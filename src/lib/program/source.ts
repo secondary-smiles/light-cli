@@ -26,7 +26,7 @@ async function getActionFile(source: string) {
   let data = await getActionFileFromUrlGroup(urlGroup);
 
   // Timout requests now that we have our data
-  dispatchEvent(new Event("timeout"));
+  dispatchEvent(new Event("textFetchTimeout"));
 
   const toml: Action = parseToTOML(data);
   const isValidToml = validAction(toml);
@@ -72,11 +72,11 @@ function checkDomain(source: string) {
 async function getActionFileFromUrlGroup(urlGroup: UrlGroup) {
   const promises = [];
   if (urlGroup.preUrl) {
-    promises.push(fetchWrapper(urlGroup.preUrl));
+    promises.push(textFetchWrapper(urlGroup.preUrl));
   }
 
   if (urlGroup.postUrl) {
-    promises.push(fetchWrapper(urlGroup.postUrl));
+    promises.push(textFetchWrapper(urlGroup.postUrl));
   }
 
   const data = await Promise.any(promises).catch(() => {
@@ -90,10 +90,10 @@ async function getActionFileFromUrlGroup(urlGroup: UrlGroup) {
   return await data;
 }
 
-async function fetchWrapper(url: URL) {
+async function textFetchWrapper(url: URL) {
   const controller = new AbortController();
 
-  addEventListener("timeout", () => {
+  addEventListener("textFetchTimeout", () => {
     clearTimeout(timeoutHandle);
     controller.abort("request too slow");
   });

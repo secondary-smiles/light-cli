@@ -7,7 +7,7 @@ import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
-import { genBinloc } from "./lib/util/path.ts";
+import { genBinloc } from "./lib/util/file.ts";
 import {INTERPOLATES} from "./globals.ts";
 
 async function main() {
