@@ -15,6 +15,8 @@ async function main() {
     let commandToml = findProgram(toml, program.programArgs);
 
     commandToml = interpolateVersion(commandToml);
+
+    info.log(commandToml);
   }
 }
 
