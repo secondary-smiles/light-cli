@@ -2,8 +2,9 @@ import { ensureFile } from "fs/ensure_file.ts";
 import { ProgramAction } from "../program/toml.ts";
 import { error } from "../util/error.ts";
 import { info } from "../util/info.ts";
-import { blue, bold, brightGreen, gray, red } from "fmt/colors.ts";
+import { bold, brightGreen, gray, red, cyan } from "fmt/colors.ts";
 import { MAXLENGTH } from "../../globals.ts";
+import { highlightBash } from "../util/highlight.ts";
 
 async function runInstall(toml: ProgramAction, loc: string) {
   await Deno.chdir(loc);
@@ -25,7 +26,7 @@ async function runInstall(toml: ProgramAction, loc: string) {
     toml.name
   )}' requires a bash script to be run.\n[${bold(brightGreen("R"))}]un, [${red(
     "c"
-  )}]ancel, [${blue("v")}]iew`;
+  )}]ancel, [${cyan("v")}]iew`;
 
   if (!promptContinue(toml, prompt)) {
     error(new Error("install cancelled"));
@@ -61,7 +62,7 @@ function promptContinue(toml: ProgramAction, promptString = ""): boolean {
     default:
       return promptContinue(
         toml,
-        `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel, [${blue("v")}]iew`
+        `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel, [${cyan("v")}]iew`
       );
   }
 }
@@ -80,7 +81,7 @@ function displayScript(toml: ProgramAction) {
   const top = start + toml.name.toUpperCase() + end;
   const bottom = "+" + new Array(MAXLENGTH).join("-") + "+";
   info.log(gray(top));
-  info.log(toml.install.cmd.trim());
+  info.log(highlightBash(toml.install.cmd.trim()));
   info.log(gray(bottom));
 }
 

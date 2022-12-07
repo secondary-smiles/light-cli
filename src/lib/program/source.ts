@@ -1,10 +1,15 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
-import { PROVIDES, NAME, TIMEOUT, ACTION } from "../../globals.ts";
+import { PROVIDES, NAME, TIMEOUT } from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
-import {Action, ProgramAction, Provide, validAction, validLink, validProvides} from "./toml.ts";
+import {
+  Action,
+  Provide,
+  validAction,
+  validProvides,
+} from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -30,11 +35,11 @@ async function followSymlink(source: string) {
   const isValidToml = validAction(toml);
 
   if (isValidToml instanceof Error) {
-    error(isValidToml)
+    error(isValidToml);
   }
 
   if (!toml || !instanceOfAction(toml)) {
-    error(new Error("critical toml parse failure"))
+    error(new Error("critical toml parse failure"));
   }
 
   return toml;
@@ -115,10 +120,10 @@ async function getFileFromUrlGroup(urlGroup: UrlGroup) {
     promises.push(textFetchWrapper(urlGroup.postUrl));
   }
 
-  const data = await Promise.any(promises).catch(() => {
+  const data = await Promise.any(promises).catch((err) => {
     error(
       new Error(
-        `could not fetch file, try making sure '${urlGroup.postUrl?.hostname}' is a valid source`
+        `could not fetch file, try making sure '${urlGroup.postUrl?.hostname}' is a valid source (failed with error '${err.message}')`
       )
     );
   });
