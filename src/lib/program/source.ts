@@ -1,10 +1,10 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
-import { ACTION, NAME, TIMEOUT } from "../../globals.ts";
+import { PROVIDES, NAME, TIMEOUT, ACTION } from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
-import { Action, validAction } from "./toml.ts";
+import {Action, ProgramAction, Provide, validAction, validLink, validProvides} from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -12,29 +12,53 @@ interface UrlGroup {
 }
 
 async function resolveSource(args: ProgramArgs) {
-  return await getActionFile(args.source).catch((err) => {
+  return await getProvidesFile(args.source).catch((err) => {
     error(err);
   });
 }
 
+async function followSymlink(source: string) {
+  const url: URL | undefined = checkDomain(source);
+  if (!url) {
+    error(new Error(`cannot construct url from ${source}`));
+  }
+
+  const data = await textFetchWrapper(url);
+
+  const toml: Action | unknown = parseToTOML(data);
+
+  const isValidToml = validAction(toml);
+
+  if (isValidToml instanceof Error) {
+    error(isValidToml)
+  }
+
+  if (!toml || !instanceOfAction(toml)) {
+    error(new Error("critical toml parse failure"))
+  }
+
+  return toml;
+}
+
 // CHECKS:
-// light.{{source}}/action.toml
-// {{source}}/light/action.toml
-async function getActionFile(source: string) {
+// light.{{source}}/provides.toml
+// {{source}}/light/provides.toml
+async function getProvidesFile(source: string) {
   const urlGroup = getUrl(source);
-  const data = await getActionFileFromUrlGroup(urlGroup);
+  const data = await getFileFromUrlGroup(urlGroup);
 
   // Timout requests now that we have our data
   dispatchEvent(new Event("textFetchTimeout"));
 
-  const toml: Action | unknown = parseToTOML(data);
-  const isValidToml = validAction(toml);
+  const toml: Provide | unknown = parseToTOML(data);
+
+  const isValidToml = validProvides(toml);
 
   if (isValidToml instanceof Error) {
     error(isValidToml);
   }
 
-  if (!instanceOfAction(toml)) {
+  if (!instanceOfProvides(toml)) {
     error(new Error("toml critical parse failure"));
   }
 
@@ -45,13 +69,17 @@ function instanceOfAction(object: any): object is Action {
   return "provides" in object;
 }
 
+function instanceOfProvides(object: any): object is Provide {
+  return "provides" in object;
+}
+
 function getUrl(source: string) {
   if (source.split(".").length < 2) {
     error(new Error(`${source} could not be parsed as URL`));
   }
 
-  const postSourceUrlString = `https://${source}/${NAME}/${ACTION}`;
-  const preSourceUrlString = `https://${NAME}.${source}/${ACTION}`;
+  const postSourceUrlString = `https://${source}/${NAME}/${PROVIDES}`;
+  const preSourceUrlString = `https://${NAME}.${source}/${PROVIDES}`;
   const preUrl = checkDomain(preSourceUrlString);
   const postUrl = checkDomain(postSourceUrlString);
 
@@ -77,7 +105,7 @@ function checkDomain(source: string) {
   return url;
 }
 
-async function getActionFileFromUrlGroup(urlGroup: UrlGroup) {
+async function getFileFromUrlGroup(urlGroup: UrlGroup) {
   const promises = [];
   if (urlGroup.preUrl) {
     promises.push(textFetchWrapper(urlGroup.preUrl));
@@ -90,7 +118,7 @@ async function getActionFileFromUrlGroup(urlGroup: UrlGroup) {
   const data = await Promise.any(promises).catch(() => {
     error(
       new Error(
-        `could not fetch action.toml, try making sure '${urlGroup.postUrl?.hostname}' is a valid source`
+        `could not fetch file, try making sure '${urlGroup.postUrl?.hostname}' is a valid source`
       )
     );
   });
@@ -122,4 +150,4 @@ async function textFetchWrapper(url: URL) {
   return res.text();
 }
 
-export { resolveSource, checkDomain };
+export { resolveSource, checkDomain, followSymlink };

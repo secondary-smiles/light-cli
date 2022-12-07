@@ -1,7 +1,7 @@
 import { AppCommand, parseArgs, ProgramArgs } from "./lib/cli/parseArgs.ts";
-import { resolveSource } from "./lib/program/source.ts";
+import {followSymlink, resolveSource} from "./lib/program/source.ts";
 import { error } from "./lib/util/error.ts";
-import { Action, ProgramAction } from "./lib/program/toml.ts";
+import {Provide, ProgramAction, Action} from "./lib/program/toml.ts";
 import { install } from "./lib/install/mod.ts";
 import {
   interpolateVersion,
@@ -12,10 +12,13 @@ async function main() {
   const program = parseArgs(Deno.args);
 
   runCommands(program.appCommands);
-  if (program.programArgs) {
-    const toml = await resolveSource(program.programArgs);
 
-    const foundProgram = findProgram(toml, program.programArgs);
+  if (program.programArgs) {
+    const provides = await resolveSource(program.programArgs);
+
+    const foundProgram = await findProgram(provides, program.programArgs);
+
+    console.log(foundProgram)
 
     const command = {
       toml: foundProgram[0],
@@ -24,8 +27,6 @@ async function main() {
 
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
-
-    toml.provides[command.index] = command.toml;
 
     await install(command.toml, program);
   }
@@ -37,19 +38,20 @@ function runCommands(commands: AppCommand[]) {
   });
 }
 
-function findProgram(
-  toml: Action,
+async function findProgram(
+  toml: Provide,
   program: ProgramArgs
-): [ProgramAction, number] {
-  let commandToml: ProgramAction | null = null;
+): Promise<[ProgramAction, number]> {
+  let commandToml: Action | null = null;
 
   let index: number | null = null;
-  toml.provides!.forEach((item, i) => {
+  for (const item of toml.provides!) {
+    const i = toml.provides!.indexOf(item);
     if (item.name === program.program) {
-      commandToml = item;
+      commandToml = await followSymlink(item.source);
       index = i;
     }
-  });
+  }
 
   if (!commandToml || typeof index !== "number") {
     error(
@@ -59,7 +61,7 @@ function findProgram(
     );
   }
 
-  return [commandToml, index];
+  return [commandToml.provides, index];
 }
 
 // Begin the program

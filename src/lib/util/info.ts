@@ -6,15 +6,15 @@ const info = {
   },
 
   info(data: any) {
-    console.info(bold(blue("info: ")), data);
+    console.info(bold(blue("info") + ": "), data);
   },
 
   warn(data: any) {
-    console.warn(bold(yellow("warn: ")), data);
+    console.warn(bold(yellow("warn") + ": "), data);
   },
 
   error(data: any) {
-    console.warn(bold(red("error: ")), data);
+    console.warn(bold(red("error") + ": "), data);
   },
 };
 

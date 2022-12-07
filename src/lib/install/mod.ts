@@ -8,7 +8,11 @@ import {decompress} from "./compress.ts";
 async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
   const fileloc = await getSourceFromWeb(toml);
-  const decompressedFile = await decompress(fileloc, toml.compress);
+  const decompressedFileLoc = await decompress(fileloc);
+
+  await Deno.run({cmd: ["pwd"]})
+  await Deno.chdir(decompressedFileLoc);
+  await Deno.run({cmd: ["pwd"]})
 }
 
 export { install };

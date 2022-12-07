@@ -13,6 +13,8 @@ async function decompress(fileloc: string) {
   } catch (err) {
     error(err);
   }
+
+  return destloc;
 }
 
 export { decompress };

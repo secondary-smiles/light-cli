@@ -1,13 +1,25 @@
+export interface Provide {
+  provides: ProgramSymlink[];
+}
+
+export interface ProgramSymlink {
+  name: string;
+  source: string;
+}
+
 export interface Action {
-  provides: ProgramAction[];
+  provides: ProgramAction;
 }
 
 export interface ProgramAction {
   name: string;
+  author: string;
+  description: string;
   source: string;
   dyn_version: boolean;
   def_ver: string;
   install: ProgramInstall;
+  dependencies: ProgramDependency[];
 }
 
 export interface ProgramInstall {
@@ -15,23 +27,52 @@ export interface ProgramInstall {
   test: string;
 }
 
-// TODO Validate individual fields, not just their existence
-function validAction(action: any) {
-  if (!action.provides) {
-    return new Error(`'provides' list not specified`);
+export interface ProgramDependency {
+  name: string;
+  version?: string;
+  source: string;
+}
+
+function validProvides(provides: any) {
+  if (!provides.provides) {
+    return new Error("missing provides");
   }
 
   let returnVal: boolean | Error = true;
-
-  action.provides.forEach((program: ProgramAction) => {
-    const valid = validProgramAction(program);
-
-    if (valid instanceof Error) {
-      returnVal =  new Error(`program invalid: ${valid.message}`);
+  provides.provides.forEach((link: ProgramSymlink) => {
+    const isValidLink = validLink(link);
+    if (isValidLink instanceof Error) {
+      returnVal = new Error(`invalid link: ${isValidLink.message}`);
     }
   });
 
   return returnVal;
+}
+
+function validLink(link: ProgramSymlink) {
+  if (!link.name) {
+    return new Error("missing name");
+  }
+
+  if (!link.source) {
+    return new Error("missing source");
+  }
+
+  return true;
+}
+
+// TODO Validate individual fields, not just their existence
+function validAction(action: any) {
+  if (!action.provides) {
+    return new Error("missing provides");
+  }
+
+  const validProgram = validProgramAction(action.provides);
+  if (validProgram instanceof Error) {
+    return new Error(`invalid provides: ${validProgram.message}`);
+  }
+
+  return true;
 }
 
 function validProgramAction(program: ProgramAction) {
@@ -71,4 +112,4 @@ function validInstall(install: ProgramInstall) {
   return true;
 }
 
-export { validAction };
+export { validAction, validLink, validProvides };
