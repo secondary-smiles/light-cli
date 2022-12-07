@@ -3,11 +3,12 @@ import { checkDomain } from "../program/source.ts";
 import { error } from "../util/error.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import {info} from "../util/info.ts";
+import {ProgramAction} from "../program/toml.ts";
 
-async function getSourceFromWeb(source: string) {
-  const url = checkDomain(source);
+async function getSourceFromWeb(toml: ProgramAction) {
+  const url = checkDomain(toml.source);
   if (!url) {
-    error(new Error(`'${source}' cannot be parsed as a URL`));
+    error(new Error(`'${toml.source}' cannot be parsed as a URL`));
   }
 
   const res = await fetch(url!);
@@ -16,7 +17,7 @@ async function getSourceFromWeb(source: string) {
     error(new Error("invalid server response"));
   }
 
-  const fileLoc = `${INTERPOLATES.sourceloc}/source`;
+  let fileLoc = `${INTERPOLATES.sourceloc}/source`;
   await ensureFile(fileLoc);
   const file = await Deno.open(fileLoc, {
     create: true,

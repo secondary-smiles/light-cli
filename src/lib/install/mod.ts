@@ -7,8 +7,8 @@ import {decompress} from "./compress.ts";
 
 async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
-  const fileloc = await getSourceFromWeb(toml.source);
-  const decompressedFile = await decompress(fileloc);
+  const fileloc = await getSourceFromWeb(toml);
+  const decompressedFile = await decompress(fileloc, toml.compress);
 }
 
 export { install };

@@ -5,7 +5,6 @@ export interface Action {
 export interface ProgramAction {
   name: string;
   source: string;
-  compress: string;
   dyn_version: boolean;
   def_ver: string;
   install: ProgramInstall;
@@ -16,6 +15,7 @@ export interface ProgramInstall {
   test: string;
 }
 
+// TODO Validate individual fields, not just their existence
 function validAction(action: any) {
   if (!action.provides) {
     return new Error(`'provides' list not specified`);
@@ -49,10 +49,6 @@ function validProgramAction(program: ProgramAction) {
 
   if (!program.source) {
     return new Error(`source not specified`);
-  }
-
-  if (!program.compress) {
-    return new Error(`compress not specified`)
   }
 
   const isValidInstall = validInstall(program.install);
