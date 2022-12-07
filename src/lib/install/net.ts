@@ -2,7 +2,6 @@ import { ensureFile } from "fs/mod.ts";
 import { checkDomain } from "../program/source.ts";
 import { error } from "../util/error.ts";
 import { INTERPOLATES } from "../../globals.ts";
-import {info} from "../util/info.ts";
 import {ProgramAction} from "../program/toml.ts";
 
 async function getSourceFromWeb(toml: ProgramAction) {

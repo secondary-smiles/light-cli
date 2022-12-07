@@ -4,20 +4,15 @@ import { getSourceFromWeb } from "./net.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import { genSourceLoc } from "../util/file.ts";
 import { decompress } from "./compress.ts";
-import {info} from "../util/info.ts";
-import {ensureFile} from "fs/mod.ts";
+import { runInstall } from "./executeInstall.ts";
 
 async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
-  info.info("interp " + INTERPOLATES.sourceloc);
   const fileloc = await getSourceFromWeb(toml);
-  info.info("file " + fileloc);
   const decompressedFileLoc = await decompress(fileloc);
 
+  await runInstall(toml, decompressedFileLoc);
 
-
-
-  info.info("decomp " + decompressedFileLoc);
 }
 
 export { install };

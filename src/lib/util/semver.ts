@@ -12,7 +12,6 @@ export class Semver {
   }
 
   toString() {
-    console.log(this);
     return `${this.major}.${this.minor}.${this.patch}`;
   }
 

@@ -4,7 +4,6 @@ import { PREFIX } from "../../globals.ts";
 import { AllCommands } from "./commands/mod.ts";
 import { Command } from "./args.ts";
 import { error } from "../util/error.ts";
-import { info } from "../util/info.ts";
 
 export interface AppCommand {
   command: Command;

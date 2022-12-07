@@ -28,11 +28,8 @@ async function main() {
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
 
-    console.log(command.toml)
-    console.log("install")
     await install(command.toml, program);
-    // await cleanup();
-    console.log("done")
+    await cleanup();
   }
 
   return;

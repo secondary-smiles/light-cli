@@ -1,5 +1,4 @@
 import { Arg, Command } from "../args.ts";
-import { info } from "../../util/info.ts";
 import {COMMANDS} from "../../../globals.ts";
 
 const args: Arg = {
