@@ -10,6 +10,8 @@ export const USAGE = `${NAME} [${bold("FLAGS")}] ${brightGreen(PREFIX)}<${bold(
 )}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
 export const PROVIDES = "provides.toml";
 export const ACTION = "action.toml";
+
+//FIXME: TIMEOUT Holding entire program
 export const TIMEOUT = 6000;
 
 export const INTERPOLATES = {

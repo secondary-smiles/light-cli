@@ -130,13 +130,13 @@ async function textFetchWrapper(url: URL) {
   const controller = new AbortController();
 
   addEventListener("textFetchTimeout", () => {
-    clearTimeout(timeoutHandle);
+    // clearTimeout(timeoutHandle);
     controller.abort("request too slow");
   });
 
-  const timeoutHandle = setTimeout(() => {
-    controller.abort("request timed out");
-  }, TIMEOUT);
+  // const timeoutHandle = setTimeout(() => {
+  //   controller.abort("request timed out");
+  // }, TIMEOUT);
 
   const res = await fetch(url, { signal: controller.signal }).catch((err) => {
     return Promise.reject(err);

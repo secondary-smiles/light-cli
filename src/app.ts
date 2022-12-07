@@ -28,8 +28,12 @@ async function main() {
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
 
+    console.log("install")
     await install(command.toml, program);
+    console.log("done")
   }
+
+  return;
 }
 
 function runCommands(commands: AppCommand[]) {
@@ -65,4 +69,4 @@ async function findProgram(
 }
 
 // Begin the program
-await main()
+main()
