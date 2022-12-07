@@ -4,19 +4,20 @@ import { getSourceFromWeb } from "./net.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import { genSourceLoc } from "../util/file.ts";
 import { decompress } from "./compress.ts";
+import {info} from "../util/info.ts";
+import {ensureFile} from "fs/mod.ts";
 
 async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
-  console.log("interp " + INTERPOLATES.sourceloc);
+  info.info("interp " + INTERPOLATES.sourceloc);
   const fileloc = await getSourceFromWeb(toml);
-  console.log("file " + fileloc);
+  info.info("file " + fileloc);
   const decompressedFileLoc = await decompress(fileloc);
 
-  // await Deno.run({cmd: ["pwd"]})
-  // await Deno.chdir(decompressedFileLoc);
-  // await Deno.run({cmd: ["pwd"]})
 
-  console.log("decomp " + decompressedFileLoc);
+
+
+  info.info("decomp " + decompressedFileLoc);
 }
 
 export { install };

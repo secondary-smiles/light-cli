@@ -2,11 +2,18 @@ import { ProgramAction } from "../program/toml.ts";
 import { INTERPOLATES, NAME } from "../../globals.ts";
 import { ProgramArgs } from "../cli/parseArgs.ts";
 
-function genBinloc(toml: ProgramAction) {
+function genSource() {
   const home = Deno.env.get("HOME");
-  const postfix = `/.${NAME}/${NAME}/d/${toml.name}/bin`;
+  const postfix = `/.${NAME}/${NAME}/d`;
 
-  return home + postfix;
+  INTERPOLATES.baseloc = home + postfix;
+}
+
+function genBinloc(toml: ProgramAction) {
+  genSource()
+  const postfix = `/${toml.name}/bin`;
+
+  return INTERPOLATES.baseloc + postfix;
 }
 
 function genFinalBinloc(toml: ProgramAction, program: ProgramArgs) {
@@ -17,10 +24,9 @@ function genFinalBinloc(toml: ProgramAction, program: ProgramArgs) {
 }
 
 function genSourceLoc(toml: ProgramAction) {
-  const home = Deno.env.get("HOME");
-  const postfix = `/.${NAME}/${NAME}/d/${toml.name}/raw`;
+  const postfix = `/${toml.name}/raw`;
 
-  return home + postfix;
+  return INTERPOLATES.baseloc + postfix;
 }
 
 export { genBinloc, genFinalBinloc, genSourceLoc };

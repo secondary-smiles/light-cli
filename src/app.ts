@@ -7,6 +7,7 @@ import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
+import {cleanup} from "./lib/install/cleanup.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -18,7 +19,6 @@ async function main() {
 
     const foundProgram = await findProgram(provides, program.programArgs);
 
-    console.log(foundProgram)
 
     const command = {
       toml: foundProgram[0],
@@ -28,8 +28,10 @@ async function main() {
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
 
+    console.log(command.toml)
     console.log("install")
     await install(command.toml, program);
+    // await cleanup();
     console.log("done")
   }
 

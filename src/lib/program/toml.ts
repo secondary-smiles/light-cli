@@ -13,8 +13,8 @@ export interface Action {
 
 export interface ProgramAction {
   name: string;
-  author: string;
-  description: string;
+  author?: string;
+  description?: string;
   source: string;
   dyn_version: boolean;
   def_ver: string;

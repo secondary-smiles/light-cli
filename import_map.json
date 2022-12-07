@@ -5,6 +5,6 @@
     "encoding/": "https://deno.land/std@0.167.0/encoding/",
     "io/": "https://deno.land/std@0.167.0/io/",
     "fs/": "https://deno.land/std@0.167.0/fs/",
-    "compress/": "https://deno.land/x/compress@v0.4.4/"
+    "compress/": "https://deno.land/x/compress@v0.4.5/"
   }
 }
