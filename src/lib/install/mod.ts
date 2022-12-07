@@ -12,7 +12,6 @@ async function install(toml: ProgramAction, program: AppArgs) {
   const decompressedFileLoc = await decompress(fileloc);
 
   await runInstall(toml, decompressedFileLoc);
-
 }
 
 export { install };

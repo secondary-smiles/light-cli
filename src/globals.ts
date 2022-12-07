@@ -1,6 +1,7 @@
 import { bold, gray, brightGreen } from "fmt/colors.ts";
 import { Semver } from "./lib/util/semver.ts";
 
+// TODO: Comments explaining fields
 export const VERSION = "0.0.1";
 export const NAME = "light";
 export const ABOUT = "Placeholder about text";
@@ -10,6 +11,7 @@ export const USAGE = `${NAME} [${bold("FLAGS")}] ${brightGreen(PREFIX)}<${bold(
 )}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
 export const PROVIDES = "provides.toml";
 export const ACTION = "action.toml";
+export const MAXLENGTH = 41
 
 //FIXME: TIMEOUT Holding entire program
 export const TIMEOUT = 6000;

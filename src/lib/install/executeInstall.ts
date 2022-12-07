@@ -2,7 +2,8 @@ import { ensureFile } from "fs/ensure_file.ts";
 import { ProgramAction } from "../program/toml.ts";
 import { error } from "../util/error.ts";
 import { info } from "../util/info.ts";
-import { blue, bold, brightGreen, red } from "fmt/colors.ts";
+import { blue, bold, brightGreen, gray, red } from "fmt/colors.ts";
+import { MAXLENGTH } from "../../globals.ts";
 
 async function runInstall(toml: ProgramAction, loc: string) {
   await Deno.chdir(loc);
@@ -48,7 +49,7 @@ function promptContinue(toml: ProgramAction, promptString = ""): boolean {
     case "c":
       return false;
     case "v":
-      displayScript();
+      displayScript(toml);
       return promptContinue(
         toml,
         `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel`
@@ -65,8 +66,22 @@ function promptContinue(toml: ProgramAction, promptString = ""): boolean {
   }
 }
 
-function displayScript() {
-  info.warn("TODO");
+function displayScript(toml: ProgramAction) {
+  const wordLength = toml.name.length;
+  let nDashes = Math.max(0, MAXLENGTH - wordLength);
+
+  if (nDashes % 2 != 0) {
+    nDashes--;
+  }
+
+  const start = "+" + new Array(nDashes / 2).join("-");
+  const end = new Array(nDashes / 2).join("-") + "+";
+
+  const top = start + toml.name.toUpperCase() + end;
+  const bottom = "+" + new Array(MAXLENGTH).join("-") + "+";
+  info.log(gray(top));
+  info.log(toml.install.cmd.trim());
+  info.log(gray(bottom));
 }
 
 export { runInstall };
