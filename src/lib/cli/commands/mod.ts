@@ -1,6 +1,7 @@
 import { Command } from "../args.ts";
 
 import * as destroy from "./destroy.ts";
+import * as yes from "./yes.ts";
 import * as program_version from "./program_version.ts";
 
 import * as help from "./help.ts";
@@ -12,6 +13,7 @@ interface IAllCommands {
 
 export const AllCommands: IAllCommands = {
   destroy: destroy.get(),
+  yes: yes.get(),
   program_version: program_version.get(),
 
   help: help.get(),

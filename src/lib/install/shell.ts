@@ -3,7 +3,7 @@ import { ProgramAction } from "../program/toml.ts";
 import { error } from "../util/error.ts";
 import { info } from "../util/info.ts";
 import { bold, brightGreen, gray, red, cyan } from "fmt/colors.ts";
-import { INTERPOLATES, MAXLENGTH } from "../../globals.ts";
+import {COMMANDS, INTERPOLATES, MAXLENGTH} from "../../globals.ts";
 import { highlightBash } from "../util/highlight.ts";
 import { fileExists, genFinalBinloc } from "../util/file.ts";
 import { ProgramArgs } from "../cli/parseArgs.ts";
@@ -43,6 +43,11 @@ async function runInstall(toml: ProgramAction, loc: string) {
 }
 
 function promptContinue(toml: ProgramAction, promptString = ""): boolean {
+
+  if (COMMANDS.yes) {
+    return true;
+  }
+
   info.log(promptString);
   let action = prompt("> ");
   // Trim, resolve null, and toLower

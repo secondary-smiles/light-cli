@@ -11,7 +11,7 @@ export const USAGE = `${NAME} [${bold("FLAGS")}] ${brightGreen(PREFIX)}<${bold(
 )}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
 export const PROVIDES = "provides.toml";
 export const ACTION = "action.toml";
-export const MAXLENGTH = 41
+export const MAXLENGTH = 41;
 
 //FIXME: TIMEOUT Holding entire program
 export const TIMEOUT = 6000;
@@ -27,10 +27,12 @@ export const INTERPOLATES = {
 
 interface Commands {
   destroy: boolean;
+  yes: boolean;
   version: null | Semver;
 }
 
 export const COMMANDS: Commands = {
   destroy: false,
   version: null,
+  yes: false,
 };

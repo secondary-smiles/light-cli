@@ -19,6 +19,7 @@ async function isCached(program: AppArgs) {
       return false;
     }
 
+    INTERPOLATES.version = newestVersion;
     searchPath += "/" + newestVersion;
   }
 

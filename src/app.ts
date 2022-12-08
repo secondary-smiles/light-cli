@@ -7,7 +7,7 @@ import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
-import { cleanup } from "./lib/install/cleanup.ts";
+import { preclean, postclean } from "./lib/util/cleanup.ts";
 import { runProgram } from "./lib/program/run.ts";
 import { isCached } from "./lib/cache/isCached.ts";
 import { fileExists } from "./lib/util/file.ts";
@@ -18,7 +18,7 @@ async function main() {
   runCommands(program.appCommands);
 
   if (program.programArgs) {
-    await cleanup();
+    await preclean();
 
     const cachedStatus = await isCached(program);
     if (cachedStatus) {
@@ -27,6 +27,7 @@ async function main() {
       const cacheFile = cacheFolder + program.programArgs.program;
       if (await fileExists(cacheFile)) {
         const status = await runProgram(program.programArgs, cacheFolder);
+        await postclean(program.programArgs);
         evalRun(status);
         return;
       }
@@ -45,8 +46,8 @@ async function main() {
     command.toml = interpolateBinloc(command.toml);
 
     await install(command.toml, program);
-    await cleanup();
     const status = await runProgram(program.programArgs);
+    await postclean(program.programArgs);
     evalRun(status);
   }
 

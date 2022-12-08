@@ -16,7 +16,7 @@ async function getSourceFromWeb(toml: ProgramAction) {
     error(new Error(`invalid server response from '${url.href}'`));
   }
 
-  let fileLoc = `${INTERPOLATES.sourceloc}/source`;
+  const fileLoc = `${INTERPOLATES.sourceloc}/source`;
   await ensureFile(fileLoc);
   const file = await Deno.open(fileLoc, {
     create: true,
