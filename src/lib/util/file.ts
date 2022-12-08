@@ -42,4 +42,4 @@ function genSourceLoc(toml: ProgramAction) {
   return loc;
 }
 
-export { genBinloc, genFinalBinloc, genSourceLoc };
+export { genSource, genBinloc, genFinalBinloc, genSourceLoc };

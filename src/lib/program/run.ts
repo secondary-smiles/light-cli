@@ -5,12 +5,14 @@ async function runProgram(program: ProgramArgs) {
   const runOptions: Deno.RunOptions = {
     cwd: INTERPOLATES.final_binloc,
     cmd: ["./" + program.program, ...program.args],
-    stdin: "inherit",
-    stdout: "inherit",
-    stderr: "inherit",
+    // stdin: "inherit",
+    // stdout: "inherit",
+    // stderr: "inherit",
   };
 
-  await Deno.run(runOptions);
+  const process = await Deno.run(runOptions);
+
+  return await process.status();
 }
 
 export { runProgram };

@@ -1,11 +1,16 @@
 import { INTERPOLATES } from "../../globals.ts";
-import { error } from "../util/error.ts";
+import { genSource } from "../util/file.ts";
 
 async function cleanup() {
+  if (!INTERPOLATES.baseloc) {
+    genSource();
+  }
+
   try {
     await Deno.remove(INTERPOLATES.baseloc, { recursive: true });
-  } catch (err) {
-    error(err);
+  } catch (_err) {
+    //TODO: Clever error distinguishing
+    // error(_err);
   }
 }
 

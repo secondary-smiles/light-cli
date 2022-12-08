@@ -16,6 +16,8 @@ async function main() {
   runCommands(program.appCommands);
 
   if (program.programArgs) {
+    await cleanup();
+
     const provides = await resolveSource(program.programArgs);
 
     const foundProgram = await findProgram(provides, program.programArgs);
@@ -30,7 +32,8 @@ async function main() {
 
     await install(command.toml, program);
     await cleanup();
-    await runProgram(program.programArgs);
+    const status = await runProgram(program.programArgs);
+    evalRun(status);
   }
 
   return;
@@ -68,5 +71,13 @@ async function findProgram(
   return [commandToml.provides, index];
 }
 
+function evalRun(status: Deno.ProcessStatus) {
+  if (!status.success) {
+    Deno.exit(status.code);
+  }
+}
+
 // Begin the program
-main();
+main().catch((err) => {
+  error(err);
+});
