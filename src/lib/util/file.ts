@@ -4,6 +4,13 @@ import { ProgramArgs } from "../cli/parseArgs.ts";
 import { ensureDir } from "fs/ensure_dir.ts";
 import { error } from "./error.ts";
 
+function genHome() {
+  const home = Deno.env.get("HOME");
+  const postfix = `/.${NAME}`;
+
+  INTERPOLATES.homeloc = home + postfix;
+}
+
 function genSource() {
   const home = Deno.env.get("HOME");
   const postfix = `/.${NAME}/${NAME}/d`;
@@ -42,4 +49,17 @@ function genSourceLoc(toml: ProgramAction) {
   return loc;
 }
 
-export { genSource, genBinloc, genFinalBinloc, genSourceLoc };
+async function fileExists(file: string) {
+  try {
+    await Deno.stat(file);
+    return true;
+  } catch (err) {
+    if (err instanceof Deno.errors.NotFound) {
+      return false;
+    } else {
+      error(err);
+    }
+  }
+}
+
+export { genHome, genSource, genBinloc, genFinalBinloc, genSourceLoc, fileExists };

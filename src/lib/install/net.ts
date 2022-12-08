@@ -13,7 +13,7 @@ async function getSourceFromWeb(toml: ProgramAction) {
   const res = await fetch(url!);
 
   if (!res.ok) {
-    error(new Error("invalid server response"));
+    error(new Error(`invalid server response from '${url.href}'`));
   }
 
   let fileLoc = `${INTERPOLATES.sourceloc}/source`;

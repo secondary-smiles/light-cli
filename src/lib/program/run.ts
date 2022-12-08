@@ -1,9 +1,9 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { INTERPOLATES } from "../../globals.ts";
 
-async function runProgram(program: ProgramArgs) {
+async function runProgram(program: ProgramArgs, location=INTERPOLATES.final_binloc) {
   const runOptions: Deno.RunOptions = {
-    cwd: INTERPOLATES.final_binloc,
+    cwd: location,
     cmd: ["./" + program.program, ...program.args],
     // stdin: "inherit",
     // stdout: "inherit",

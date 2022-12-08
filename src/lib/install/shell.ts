@@ -5,7 +5,7 @@ import { info } from "../util/info.ts";
 import { bold, brightGreen, gray, red, cyan } from "fmt/colors.ts";
 import { INTERPOLATES, MAXLENGTH } from "../../globals.ts";
 import { highlightBash } from "../util/highlight.ts";
-import { genFinalBinloc } from "../util/file.ts";
+import { fileExists, genFinalBinloc } from "../util/file.ts";
 import { ProgramArgs } from "../cli/parseArgs.ts";
 
 async function runInstall(toml: ProgramAction, loc: string) {
@@ -26,9 +26,9 @@ async function runInstall(toml: ProgramAction, loc: string) {
 
   const prompt = `installing package '${bold(
     toml.name
-  )}' requires a bash script to be run.\n[${bold(brightGreen("R"))}]un, [${red(
-    "c"
-  )}]ancel, [${cyan("v")}]iew`;
+  )}' requires an unverified bash script to be run.\n[${bold(
+    brightGreen("R")
+  )}]un, [${red("c")}]ancel, [${cyan("v")}]iew`;
 
   if (!promptContinue(toml, prompt)) {
     error(new Error("install cancelled"));
@@ -138,16 +138,11 @@ async function installBinary(toml: ProgramAction, args: ProgramArgs) {
 
   await Deno.copyFile(INTERPOLATES.binloc + "/" + binName, finalBinName);
 
-  try {
-    await Deno.stat(finalBinName);
-    return true;
-  } catch (err) {
-    if (err instanceof Deno.errors.NotFound) {
-      error(new Error(`program binary not copied`));
-    } else {
-      error(err);
-    }
+  if (!(await fileExists(finalBinName))) {
+    error(new Error("program not copied successfully"));
   }
+
+  return true;
 }
 
 export { runInstall, runTest, installBinary };

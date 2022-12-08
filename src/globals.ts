@@ -18,6 +18,7 @@ export const TIMEOUT = 6000;
 
 export const INTERPOLATES = {
   version: "",
+  homeloc: "",
   baseloc: "",
   sourceloc: "",
   binloc: "",

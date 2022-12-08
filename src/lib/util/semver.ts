@@ -30,13 +30,35 @@ export class Semver {
 
     return true;
   }
+
+  biggerThan(that: Semver) {
+    if (this.major > that.major) {
+      return true;
+    } else if (this.major < that.major) {
+      return false
+    }
+
+    if (this.minor > that.minor) {
+      return true;
+    } else if (this.minor < that.minor) {
+      return false
+    }
+
+    if (this.patch > that.patch) {
+      return true;
+    } else if (this.patch < that.patch) {
+      return false
+    }
+
+    return true;
+  }
 }
 
 function getSemver(data: string) {
   const parts = data.split(".");
 
   if (parts.length !== 3) {
-    error(new Error(`'${data}' cannot be parsed as semver`));
+    return new Error(`'${data}' cannot be parsed as semver`);
   }
 
   const version: Semver = new Semver(
@@ -46,7 +68,7 @@ function getSemver(data: string) {
   );
 
   if (!version.valid()) {
-    error(new Error(`'${data}' cannot be parsed as semver`));
+    return new Error(`'${data}' cannot be parsed as semver`);
   }
 
   return version;

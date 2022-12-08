@@ -9,6 +9,8 @@ import {
 } from "./lib/program/interpolates.ts";
 import { cleanup } from "./lib/install/cleanup.ts";
 import { runProgram } from "./lib/program/run.ts";
+import { isCached } from "./lib/cache/isCached.ts";
+import { fileExists } from "./lib/util/file.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -17,6 +19,18 @@ async function main() {
 
   if (program.programArgs) {
     await cleanup();
+
+    const cachedStatus = await isCached(program);
+    if (cachedStatus) {
+      //TODO: Run from cache
+      const cacheFolder = cachedStatus + "/bin/";
+      const cacheFile = cacheFolder + program.programArgs.program;
+      if (await fileExists(cacheFile)) {
+        const status = await runProgram(program.programArgs, cacheFolder);
+        evalRun(status);
+        return;
+      }
+    }
 
     const provides = await resolveSource(program.programArgs);
 
