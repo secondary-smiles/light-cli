@@ -67,7 +67,11 @@ function separateArgs(args: string[]) {
       args: sourceProgramArgsList,
     };
   } else if (programArgsList.length > 0) {
-    error(new Error(`source '${programArgsList[0].slice(1)}' requires source program`))
+    error(
+      new Error(
+        `source '${programArgsList[0].slice(1)}' requires source program`
+      )
+    );
   }
 
   const splitArgs: SplitArgs = {
