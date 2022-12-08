@@ -9,7 +9,7 @@ import { highlightBash } from "../util/highlight.ts";
 async function runInstall(toml: ProgramAction, loc: string) {
   await Deno.chdir(loc);
 
-  const install_shloc = loc + "/light-setup.sh";
+  const install_shloc = loc + "/light-setup";
   await ensureFile(install_shloc);
 
   await Deno.writeTextFile(install_shloc, toml.install.cmd);
@@ -17,9 +17,9 @@ async function runInstall(toml: ProgramAction, loc: string) {
   const runOptions: Deno.RunOptions = {
     cwd: loc,
     cmd: ["/bin/bash", install_shloc],
-    stdin: "inherit",
-    stdout: "piped",
-    stderr: "piped",
+    stdin: "null",
+    stdout: "null",
+    stderr: "null",
   };
 
   const prompt = `installing package '${bold(
@@ -67,6 +67,30 @@ function promptContinue(toml: ProgramAction, promptString = ""): boolean {
   }
 }
 
+async function runTest(toml: ProgramAction, loc: string) {
+  await Deno.chdir(loc);
+
+  const test_shloc = loc + "/light-test";
+  await ensureFile(test_shloc);
+
+  await Deno.writeTextFile(test_shloc, toml.install.test);
+
+  const runOptions: Deno.RunOptions = {
+    cwd: loc,
+    cmd: ["/bin/bash", test_shloc],
+    stdin: "null",
+    stdout: "null",
+    stderr: "null",
+  };
+
+  const process = await Deno.run(runOptions);
+  const status = await process.status();
+
+  if (!status.success) {
+    error(new Error(`bash test script failed with status '${status.code}'`));
+  }
+}
+
 function displayScript(toml: ProgramAction) {
   const wordLength = toml.name.length;
   let nDashes = Math.max(0, MAXLENGTH - wordLength);
@@ -85,4 +109,4 @@ function displayScript(toml: ProgramAction) {
   info.log(gray(bottom));
 }
 
-export { runInstall };
+export { runInstall, runTest };

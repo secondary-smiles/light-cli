@@ -4,7 +4,7 @@ import { getSourceFromWeb } from "./net.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import { genSourceLoc } from "../util/file.ts";
 import { decompress } from "./compress.ts";
-import { runInstall } from "./executeInstall.ts";
+import { runInstall, runTest } from "./shell.ts";
 
 async function install(toml: ProgramAction, program: AppArgs) {
   INTERPOLATES.sourceloc = genSourceLoc(toml);
@@ -12,6 +12,7 @@ async function install(toml: ProgramAction, program: AppArgs) {
   const decompressedFileLoc = await decompress(fileloc);
 
   await runInstall(toml, decompressedFileLoc);
+  await runTest(toml, INTERPOLATES.binloc);
 }
 
 export { install };
