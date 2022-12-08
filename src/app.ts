@@ -1,13 +1,14 @@
 import { AppCommand, parseArgs, ProgramArgs } from "./lib/cli/parseArgs.ts";
-import {followSymlink, resolveSource} from "./lib/program/source.ts";
+import { followSymlink, resolveSource } from "./lib/program/source.ts";
 import { error } from "./lib/util/error.ts";
-import {Provide, ProgramAction, Action} from "./lib/program/toml.ts";
+import { Provide, ProgramAction, Action } from "./lib/program/toml.ts";
 import { install } from "./lib/install/mod.ts";
 import {
   interpolateVersion,
   interpolateBinloc,
 } from "./lib/program/interpolates.ts";
-import {cleanup} from "./lib/install/cleanup.ts";
+import { cleanup } from "./lib/install/cleanup.ts";
+import { runProgram } from "./lib/program/run.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -19,7 +20,6 @@ async function main() {
 
     const foundProgram = await findProgram(provides, program.programArgs);
 
-
     const command = {
       toml: foundProgram[0],
       index: foundProgram[1],
@@ -30,6 +30,7 @@ async function main() {
 
     await install(command.toml, program);
     await cleanup();
+    await runProgram(program.programArgs);
   }
 
   return;
@@ -68,4 +69,4 @@ async function findProgram(
 }
 
 // Begin the program
-main()
+main();
