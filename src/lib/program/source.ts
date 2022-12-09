@@ -4,12 +4,7 @@ import { error } from "../util/error.ts";
 import { PROVIDES, NAME, TIMEOUT } from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
-import {
-  Action,
-  Provide,
-  validAction,
-  validProvides,
-} from "./toml.ts";
+import { Action, Provide, validAction, validProvides } from "./toml.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -57,6 +52,7 @@ async function getProvidesFile(source: string) {
 
   const toml: Provide | unknown = parseToTOML(data);
 
+  info.load("validating response");
   const isValidToml = validProvides(toml);
 
   if (isValidToml instanceof Error) {

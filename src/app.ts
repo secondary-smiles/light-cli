@@ -11,7 +11,8 @@ import { preclean, postclean } from "./lib/util/cleanup.ts";
 import { runProgram } from "./lib/program/run.ts";
 import { isCached } from "./lib/cache/isCached.ts";
 import { fileExists } from "./lib/util/file.ts";
-import {info} from "./lib/util/info.ts";
+import { info } from "./lib/util/info.ts";
+import { ACTION, PROVIDES } from "./globals.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -34,9 +35,10 @@ async function main() {
     }
 
     // Download, unpack, compile, install, and run.
-
+    info.load(`fetching ${PROVIDES}`);
     const provides = await resolveSource(program.programArgs);
 
+    info.load(`fetching ${ACTION}`);
     const foundProgram = await findProgram(provides, program.programArgs);
 
     const command = {
@@ -47,7 +49,7 @@ async function main() {
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
 
-    info.load("doing a whole lotta things");
+    info.load("installing");
     await install(command.toml, program);
     info.stopLoad();
     const status = await runProgram(program.programArgs);
