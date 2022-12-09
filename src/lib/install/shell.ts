@@ -33,7 +33,7 @@ async function runInstall(toml: ProgramAction, loc: string) {
     brightGreen("R")
   )}]un, [${red("c")}]ancel, [${cyan("v")}]iew`;
 
-  if (!promptContinue(toml, prompt)) {
+  if (!promptContinue(toml, toml.install.cmd, prompt)) {
     error(new Error("install cancelled"));
   }
 
@@ -46,7 +46,7 @@ async function runInstall(toml: ProgramAction, loc: string) {
   }
 }
 
-function promptContinue(toml: ProgramAction, promptString = ""): boolean {
+function promptContinue(toml: ProgramAction, viewText: string, promptString = ""): boolean {
   if (COMMANDS.yes) {
     return true;
   }
@@ -56,11 +56,13 @@ function promptContinue(toml: ProgramAction, promptString = ""): boolean {
   // Trim, resolve null, and toLower
   action = action ? action.trim().toLowerCase() : "";
 
+  info.clearLines(3);
+
   switch (action) {
     case "c":
       return false;
     case "v":
-      displayScript(toml);
+      displayScript(toml, viewText);
       return promptContinue(
         toml,
         `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel`
@@ -93,6 +95,20 @@ async function runTest(toml: ProgramAction, loc: string) {
     stderr: "null",
   };
 
+  info.stopLoad();
+
+  const prompt = `testing package '${bold(
+    toml.name
+  )}' requires an unverified bash script to be run.\n[${bold(
+    brightGreen("R")
+  )}]un, [${red("c")}]ancel, [${cyan("v")}]iew`;
+
+  if (!promptContinue(toml, toml.install.test, prompt)) {
+    error(new Error("test cancelled"));
+  }
+
+  info.resumeLoad();
+
   const process = await Deno.run(runOptions);
   const status = await process.status();
 
@@ -103,7 +119,7 @@ async function runTest(toml: ProgramAction, loc: string) {
   }
 }
 
-function displayScript(toml: ProgramAction) {
+function displayScript(toml: ProgramAction, view: string) {
   const wordLength = toml.name.length;
   let nDashes = Math.max(0, MAXLENGTH - wordLength);
 
@@ -117,7 +133,7 @@ function displayScript(toml: ProgramAction) {
   const top = start + toml.name.toUpperCase() + end;
   const bottom = "+" + new Array(MAXLENGTH).join("-") + "+";
   info.log(gray(top));
-  info.log(highlightBash(toml.install.cmd.trim()));
+  info.log(highlightBash(view));
   info.log(gray(bottom));
 }
 

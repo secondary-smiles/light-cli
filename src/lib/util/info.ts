@@ -1,7 +1,7 @@
-import { blue, yellow, red, bold } from "fmt/colors.ts";
+import { blue, yellow, red, bold, gray } from "fmt/colors.ts";
 
 const info = {
-  _spinnerChars: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+  _spinnerChars: ["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"],
   _spinnerIndex: 0,
   _loader: NaN,
   _loaderData: "",
@@ -37,9 +37,8 @@ const info = {
 
   _load(data: any) {
     const clear = `\r\x1b[K`;
-    const message = `${clear}${
-      this._spinnerChars[this._spinnerIndex]
-    } ${data}..`;
+    const icon = this._spinnerChars[this._spinnerIndex];
+    const message = `${clear}${bold(icon)} ${gray(data)}${gray("..")}`;
 
     Deno.stderr.writeSync(new TextEncoder().encode(message));
 
@@ -52,6 +51,16 @@ const info = {
       Deno.stderr.writeSync(new TextEncoder().encode(clear));
       clearInterval(this._loader);
     }
+  },
+
+  clearLines(lines: number) {
+    this.stopLoad();
+    for (let i = 0; i < lines; i++) {
+      const clear = `\r\x1b[2K\r\x1b[1F`;
+      // Deno.stderr.writeSync(new TextEncoder().encode(clear));
+      Deno.stdout.writeSync(new TextEncoder().encode(clear));
+    }
+    this.resumeLoad();
   },
 };
 
