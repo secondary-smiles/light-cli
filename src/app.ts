@@ -11,6 +11,7 @@ import { preclean, postclean } from "./lib/util/cleanup.ts";
 import { runProgram } from "./lib/program/run.ts";
 import { isCached } from "./lib/cache/isCached.ts";
 import { fileExists } from "./lib/util/file.ts";
+import {info} from "./lib/util/info.ts";
 
 async function main() {
   const program = parseArgs(Deno.args);
@@ -22,7 +23,6 @@ async function main() {
 
     const cachedStatus = await isCached(program);
     if (cachedStatus) {
-      //TODO: Run from cache
       const cacheFolder = cachedStatus + "/bin/";
       const cacheFile = cacheFolder + program.programArgs.program;
       if (await fileExists(cacheFile)) {
@@ -32,6 +32,8 @@ async function main() {
         return;
       }
     }
+
+    // Download, unpack, compile, install, and run.
 
     const provides = await resolveSource(program.programArgs);
 
@@ -45,7 +47,9 @@ async function main() {
     command.toml = interpolateVersion(command.toml);
     command.toml = interpolateBinloc(command.toml);
 
+    info.load("doing a whole lotta things");
     await install(command.toml, program);
+    info.stopLoad();
     const status = await runProgram(program.programArgs);
     await postclean(program.programArgs);
     evalRun(status);

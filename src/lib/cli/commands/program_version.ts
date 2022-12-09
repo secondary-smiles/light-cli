@@ -5,7 +5,7 @@ import { error } from "../../util/error.ts";
 
 const args: Arg = {
   name: "Program Version",
-  help: "Specify program version to look for when downloading",
+  help: "Specify program version to look for when downloading and running",
   short: "v",
   long: "version",
 };
