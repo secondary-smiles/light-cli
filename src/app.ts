@@ -99,6 +99,4 @@ function evalRun(status: Deno.ProcessStatus) {
 }
 
 // Begin the program
-main().catch((err) => {
-  error(err);
-});
+await main()

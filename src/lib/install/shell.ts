@@ -46,7 +46,11 @@ async function runInstall(toml: ProgramAction, loc: string) {
   }
 }
 
-function promptContinue(toml: ProgramAction, viewText: string, promptString = ""): boolean {
+function promptContinue(
+  toml: ProgramAction,
+  viewText: string,
+  promptString = ""
+): boolean {
   if (COMMANDS.yes) {
     return true;
   }
@@ -55,7 +59,6 @@ function promptContinue(toml: ProgramAction, viewText: string, promptString = ""
   let action = prompt("> ");
   // Trim, resolve null, and toLower
   action = action ? action.trim().toLowerCase() : "";
-
   info.clearLines(3);
 
   switch (action) {
@@ -65,7 +68,8 @@ function promptContinue(toml: ProgramAction, viewText: string, promptString = ""
       displayScript(toml, viewText);
       return promptContinue(
         toml,
-        `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel`
+        viewText,
+        `Select an option\n[${bold(brightGreen("R"))}]un, [${red("c")}]ancel`
       );
     case "r":
       return true;
@@ -74,7 +78,10 @@ function promptContinue(toml: ProgramAction, viewText: string, promptString = ""
     default:
       return promptContinue(
         toml,
-        `[${bold(brightGreen("R"))}]un, [${red("c")}]ancel, [${cyan("v")}]iew`
+        viewText,
+        `Unrecognized selection '${action}'\n[${bold(brightGreen("R"))}]un, [${red(
+          "c"
+        )}]ancel, [${cyan("v")}]iew`
       );
   }
 }
@@ -133,8 +140,13 @@ function displayScript(toml: ProgramAction, view: string) {
   const top = start + toml.name.toUpperCase() + end;
   const bottom = "+" + new Array(MAXLENGTH).join("-") + "+";
   info.log(gray(top));
-  info.log(highlightBash(view));
+  info.log(highlightBash(view.trim()));
   info.log(gray(bottom));
+  alert("");
+
+  view.split("\r\n").join("\n");
+  const lines = view.trim().split("\n");
+  info.clearLines(lines.length + 3);
 }
 
 async function installBinary(toml: ProgramAction, args: ProgramArgs) {
