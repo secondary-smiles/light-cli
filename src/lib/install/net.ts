@@ -3,7 +3,6 @@ import { checkDomain } from "../program/source.ts";
 import { error } from "../util/error.ts";
 import { INTERPOLATES } from "../../globals.ts";
 import {ProgramAction} from "../program/toml.ts";
-import {info} from "../util/info.ts";
 
 async function getSourceFromWeb(toml: ProgramAction) {
   const url = checkDomain(toml.source);

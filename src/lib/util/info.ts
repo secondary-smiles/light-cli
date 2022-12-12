@@ -58,7 +58,7 @@ const info = {
     for (let i = 0; i < lines; i++) {
       const clear = `\r\x1b[2K\r\x1b[1F`;
       // Deno.stderr.writeSync(new TextEncoder().encode(clear));
-      Deno.stdout.writeSync(new TextEncoder().encode(clear));
+      Deno.stderr.writeSync(new TextEncoder().encode(clear));
     }
     this.resumeLoad();
   },

@@ -138,7 +138,7 @@ function displayScript(toml: ProgramAction, view: string) {
   const end = new Array(nDashes / 2).join("-") + "+";
 
   const top = start + toml.name.toUpperCase() + end;
-  const bottom = "+" + new Array(MAXLENGTH).join("-") + "+";
+  const bottom = "+" + new Array(MAXLENGTH-1).join("-") + "+";
   info.log(gray(top));
   info.log(highlightBash(view.trim()));
   info.log(gray(bottom));
