@@ -3,6 +3,7 @@ import { Command } from "../args.ts";
 import * as destroy from "./destroy.ts";
 import * as yes from "./yes.ts";
 import * as program_version from "./program_version.ts";
+import * as core from "./core.ts";
 
 import * as help from "./help.ts";
 import * as app_version from "./app_version.ts";
@@ -15,6 +16,7 @@ export const AllCommands: IAllCommands = {
   destroy: destroy.get(),
   yes: yes.get(),
   program_version: program_version.get(),
+  core: core.get(),
 
   help: help.get(),
   app_version: app_version.get(),

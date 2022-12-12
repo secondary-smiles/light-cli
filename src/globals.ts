@@ -23,16 +23,19 @@ export const INTERPOLATES = {
   sourceloc: "",
   binloc: "",
   final_binloc: "",
+  coreloc: "/light/light-core/www/",
 };
 
 interface Commands {
   destroy: boolean;
   yes: boolean;
   version: null | Semver;
+  core: boolean;
 }
 
 export const COMMANDS: Commands = {
   destroy: false,
   version: null,
   yes: false,
+  core: false,
 };

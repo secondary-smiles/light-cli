@@ -10,7 +10,7 @@ import {
 import { preclean, postclean } from "./lib/util/cleanup.ts";
 import { runProgram } from "./lib/program/run.ts";
 import { isCached } from "./lib/cache/isCached.ts";
-import { fileExists } from "./lib/util/file.ts";
+import { pathExists } from "./lib/util/file.ts";
 import { info } from "./lib/util/info.ts";
 import { ACTION, PROVIDES } from "./globals.ts";
 
@@ -26,7 +26,7 @@ async function main() {
     if (cachedStatus) {
       const cacheFolder = cachedStatus + "/bin/";
       const cacheFile = cacheFolder + program.programArgs.program;
-      if (await fileExists(cacheFile)) {
+      if (await pathExists(cacheFile)) {
         const status = await runProgram(program.programArgs, cacheFolder);
         await postclean(program.programArgs);
         evalRun(status);

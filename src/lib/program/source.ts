@@ -1,10 +1,11 @@
 import { ProgramArgs } from "../cli/parseArgs.ts";
 import { info } from "../util/info.ts";
 import { error } from "../util/error.ts";
-import { PROVIDES, NAME, TIMEOUT } from "../../globals.ts";
+import {PROVIDES, NAME, INTERPOLATES, COMMANDS, ACTION} from "../../globals.ts";
 
 import { parse as parseToTOML } from "encoding/toml.ts";
 import { Action, Provide, validAction, validProvides } from "./toml.ts";
+import { pathExists } from "../util/file.ts";
 
 interface UrlGroup {
   preUrl?: URL;
@@ -12,44 +13,63 @@ interface UrlGroup {
 }
 
 async function resolveSource(args: ProgramArgs) {
-  return await getProvidesFile(args.source).catch((err) => {
-    error(err);
-  });
+  if (COMMANDS.core) {
+    return await getProvidesFileFromCore(args.source).catch((err) => {
+      error(err);
+    });
+  } else {
+    return await getProvidesFileFromExternal(args.source).catch((err) => {
+      error(err);
+    });
+  }
 }
 
 async function followSymlink(source: string) {
-  const url: URL | undefined = checkDomain(source);
-  if (!url) {
-    error(new Error(`cannot construct url from ${source}`));
+  if (COMMANDS.core) {
+    const sourceFile = INTERPOLATES.homeloc + INTERPOLATES.coreloc + source;
+    if (await pathExists(sourceFile)) {
+      const data = await Deno.readTextFile(sourceFile);
+      return validateTomlAction(data);
+    } else {
+      error(new Error(`${sourceFile} is not a valid ${ACTION} source in core`));
+    }
+  } else {
+    const url: URL | undefined = checkDomain(source);
+    if (!url) {
+      error(new Error(`cannot construct url from ${source}`));
+    }
+    const data = await textFetchWrapper(url).catch((err) => {
+      error(err);
+    });
+    return validateTomlAction(data);
   }
+}
 
-  const data = await textFetchWrapper(url);
-
-  const toml: Action | unknown = parseToTOML(data);
-
-  const isValidToml = validAction(toml);
-
-  if (isValidToml instanceof Error) {
-    error(isValidToml);
+async function getProvidesFileFromCore(source: string) {
+  const sourceFile =
+    INTERPOLATES.homeloc + INTERPOLATES.coreloc + source + "/" + PROVIDES;
+  if (await pathExists(sourceFile)) {
+    const data = await Deno.readTextFile(sourceFile);
+    return validateTomlProvide(data);
+  } else {
+    throw new Error(`${source} is not a valid source in core`);
   }
-
-  if (!toml || !instanceOfAction(toml)) {
-    error(new Error("critical toml parse failure"));
-  }
-
-  return toml;
 }
 
 // CHECKS:
 // light.{{source}}/provides.toml
 // {{source}}/light/provides.toml
-async function getProvidesFile(source: string) {
+async function getProvidesFileFromExternal(source: string) {
   const urlGroup = getUrl(source);
   const data = await getFileFromUrlGroup(urlGroup);
 
   // Timout requests now that we have our data
   dispatchEvent(new Event("textFetchTimeout"));
 
+  return validateTomlProvide(data);
+}
+
+function validateTomlProvide(data: string) {
   const toml: Provide | unknown = parseToTOML(data);
 
   info.load("validating response");
@@ -61,6 +81,22 @@ async function getProvidesFile(source: string) {
 
   if (!instanceOfProvides(toml)) {
     error(new Error("toml critical parse failure"));
+  }
+
+  return toml;
+}
+
+function validateTomlAction(data: string) {
+  const toml: Action | unknown = parseToTOML(data);
+
+  const isValidToml = validAction(toml);
+
+  if (isValidToml instanceof Error) {
+    error(isValidToml);
+  }
+
+  if (!toml || !instanceOfAction(toml)) {
+    error(new Error("critical toml parse failure"));
   }
 
   return toml;

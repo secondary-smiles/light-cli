@@ -49,7 +49,7 @@ function genSourceLoc(toml: ProgramAction) {
   return loc;
 }
 
-async function fileExists(file: string) {
+async function pathExists(file: string) {
   try {
     await Deno.stat(file);
     return true;
@@ -62,4 +62,4 @@ async function fileExists(file: string) {
   }
 }
 
-export { genHome, genSource, genBinloc, genFinalBinloc, genSourceLoc, fileExists };
+export { genHome, genSource, genBinloc, genFinalBinloc, genSourceLoc, pathExists };
