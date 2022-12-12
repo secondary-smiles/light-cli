@@ -38,12 +38,16 @@ async function runInstall(toml: ProgramAction, loc: string) {
   }
 
   info.resumeLoad();
+  // CWD Won't load without pausing for some reason sometimes
+  await new Promise(resolve => setTimeout(resolve, 100));
+
   const process = Deno.run(runOptions);
   const status = await process.status();
 
   if (!status.success) {
     error(new Error(`bash install script failed with status '${status.code}'`));
   }
+  info.resumeLoad();
 }
 
 function promptContinue(
@@ -51,7 +55,7 @@ function promptContinue(
   viewText: string,
   promptString = ""
 ): boolean {
-  if (COMMANDS.yes) {
+  if (COMMANDS.yes || COMMANDS.core) {
     return true;
   }
 
@@ -79,9 +83,9 @@ function promptContinue(
       return promptContinue(
         toml,
         viewText,
-        `Unrecognized selection '${action}'\n[${bold(brightGreen("R"))}]un, [${red(
-          "c"
-        )}]ancel, [${cyan("v")}]iew`
+        `Unrecognized selection '${action}'\n[${bold(
+          brightGreen("R")
+        )}]un, [${red("c")}]ancel, [${cyan("v")}]iew`
       );
   }
 }
@@ -138,7 +142,7 @@ function displayScript(toml: ProgramAction, view: string) {
   const end = new Array(nDashes / 2).join("-") + "+";
 
   const top = start + toml.name.toUpperCase() + end;
-  const bottom = "+" + new Array(MAXLENGTH-1).join("-") + "+";
+  const bottom = "+" + new Array(MAXLENGTH - 1).join("-") + "+";
   info.log(gray(top));
   info.log(highlightBash(view.trim()));
   info.log(gray(bottom));
@@ -152,27 +156,18 @@ function displayScript(toml: ProgramAction, view: string) {
 async function installBinary(toml: ProgramAction, args: ProgramArgs) {
   INTERPOLATES.final_binloc = genFinalBinloc(toml, args);
 
-  const binDirContents = await Deno.readDir(INTERPOLATES.binloc);
-  let binDirLength = 0;
-  let binName = "";
-  for await (const item of binDirContents) {
-    if (item.isFile) {
-      binDirLength++;
-      binName = item.name;
-    }
-  }
-
-  if (binDirLength != 1) {
-    const symbol = binDirLength > 1 ? "more" : "less";
+  if (!(await pathExists(INTERPOLATES.binloc + "/" + toml.name))) {
     error(
-      new Error(`found ${symbol} than one file in ${INTERPOLATES.final_binloc}`)
+      new Error(
+        `Could not find binary named ${toml.name} at ${INTERPOLATES.binloc}`
+      )
     );
   }
 
   const finalBinName = INTERPOLATES.final_binloc + "/" + toml.name;
   await ensureFile(finalBinName);
 
-  await Deno.copyFile(INTERPOLATES.binloc + "/" + binName, finalBinName);
+  await Deno.copyFile(INTERPOLATES.binloc + "/" + toml.name, finalBinName);
 
   if (!(await pathExists(finalBinName))) {
     error(new Error("program not copied successfully"));
