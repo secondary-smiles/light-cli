@@ -38,8 +38,9 @@ async function runInstall(toml: ProgramAction, loc: string) {
   }
 
   info.resumeLoad();
+
   // CWD Won't load without pausing for some reason sometimes
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   const process = Deno.run(runOptions);
   const status = await process.status();

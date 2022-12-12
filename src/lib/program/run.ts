@@ -6,9 +6,9 @@ async function runProgram(program: ProgramArgs, location=INTERPOLATES.final_binl
   const runOptions: Deno.RunOptions = {
     cwd: Deno.cwd(),
     cmd: [loc + program.program, ...program.args],
-    // stdin: "inherit",
-    // stdout: "inherit",
-    // stderr: "inherit",
+    stdin: "inherit",
+    stdout: "inherit",
+    stderr: "inherit",
   };
 
   const process = await Deno.run(runOptions);
