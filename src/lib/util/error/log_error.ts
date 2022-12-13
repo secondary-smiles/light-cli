@@ -1,7 +1,13 @@
-import Problem from "util/error/error_type.ts";
+import { gray } from "fmt/colors.ts";
+
+import { Problem } from "error";
+import { logger } from "logger";
 
 function log_error(reason: Problem) {
-  // TODO: Log log_error
+  // TODO: Log {reason}
+  const message = `${reason.message} ${gray(`(${reason.code})`)}`;
+  logger.error(message);
+
   Deno.exit(reason.code);
 }
 

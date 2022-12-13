@@ -1,5 +1,8 @@
 {
   "imports": {
-    "util/": "./src/lib/util/"
+    "fmt/": "https://deno.land/std/fmt/",
+
+    "error": "./src/lib/util/error/mod.ts",
+    "logger": "./src/lib/util/logging/mod.ts"
   }
 }

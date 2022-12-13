@@ -1,8 +1,9 @@
-import { log_error } from "util/error/log_error.ts";
-import Problem from "util/error/error_type.ts";
+import { log_error, Problem } from "error";
+import { logger } from "logger";
 
 async function main() {
-  console.log("hello, world!");
+  logger.log("hello, world!");
+  logger.warn("this is a warning");
   throw new Problem("expected error");
 }
 
