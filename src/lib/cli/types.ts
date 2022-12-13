@@ -16,4 +16,5 @@ class Command {
   }
 }
 
-export type { Arg, Command };
+export { Command };
+export type { Arg };

@@ -1,9 +1,9 @@
+import { Command } from "lib/cli/types.ts";
 
-
-private const _allCommands = {};
-
-function allCommands() {
-  return _allCommands;
+interface CommandsIndex {
+  [key: string]: Command;
 }
 
-export { allCommands };
+const AllCommands: CommandsIndex = {};
+
+export { AllCommands };
