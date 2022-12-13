@@ -1,3 +1,5 @@
 {
-  "imports": {}
+  "imports": {
+    "util/": "./src/lib/util/"
+  }
 }
