@@ -37,33 +37,29 @@ class Logger {
     };
   }
 
-  log(message: string) {
+  log(message: any) {
     this.stopLoad();
 
     //TODO: Check verbosity
     console.log(message);
-    this.load();
   }
 
-  notice(message: string) {
+  notice(message: any) {
     this.stopLoad();
 
     console.info(blue(this.prefix + message));
-    this.load();
   }
 
-  warn(message: string) {
+  warn(message: any) {
     this.stopLoad();
 
     console.warn(brightYellow(this.prefix + message));
-    this.load();
   }
 
-  error(message: string) {
+  error(message: any) {
     this.stopLoad();
 
     console.error(red(this.prefix + message));
-    this.load();
   }
 
   load(message = this.loaderData.message, speed = 50) {
