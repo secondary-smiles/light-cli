@@ -1,7 +1,7 @@
 import {bold, underline, brightGreen, gray} from "fmt/colors.ts"
 
 import {AllCommands} from "./mod.ts";
-import { Arg, Command } from "lib/cli/types.ts";
+import { Arg, Command } from "lib/cli/commands/types.ts";
 import {logger} from "logger";
 
 const args: Arg = {
