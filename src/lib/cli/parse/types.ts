@@ -4,8 +4,13 @@ import { Command } from "lib/cli/commands/types.ts";
 type Flag = string | number | boolean;
 
 interface Program {
-  app: [Flag, Command][];
-  program: ProgramCommands
+  app: CommandGroup[];
+  program: ProgramCommands;
+}
+
+interface CommandGroup {
+  flag: Flag;
+  command: Command;
 }
 
 interface PreparsedArgs {
@@ -16,7 +21,7 @@ interface PreparsedArgs {
 interface ProgramCommands {
   source: string;
   program: string;
-  args?: (Flag)[];
+  args?: Flag[];
 }
 
-export type { PreparsedArgs, ProgramCommands, Program, Flag };
+export type { PreparsedArgs, ProgramCommands, Program, Flag, CommandGroup };

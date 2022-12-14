@@ -4,8 +4,12 @@ import { logger } from "logger";
 import { parse as parseAppFlags, Args as ParsedArgs } from "flags/mod.ts";
 import { AllCommands } from "lib/cli/commands/mod.ts";
 
-import { ProgramCommands, PreparsedArgs, Program, Flag } from "./types.ts";
-import { Command } from "lib/cli/commands/types.ts";
+import {
+  ProgramCommands,
+  PreparsedArgs,
+  Program,
+  CommandGroup,
+} from "./types.ts";
 
 function parse(args = Deno.args) {
   const preParsedArgs = separateProgramAndAppArgs(args);
@@ -61,10 +65,10 @@ function parseProgramCommands(args: string[]) {
 function parseCommands(args: ParsedArgs) {
   // Command validation
   if (args["_"].length != 0) {
-    throw new Problem(`command '${args["_"][0]}' not allowed`)
+    throw new Problem(`command '${args["_"][0]}' not allowed`);
   }
 
-  const parsedCommands: [Flag, Command][] = [];
+  const parsedCommands: CommandGroup[] = [];
 
   for (const key in args) {
     if (key == "_") continue;
@@ -75,7 +79,7 @@ function parseCommands(args: ParsedArgs) {
       const command = AllCommands[commandKey];
 
       if (key == command.arg.long || key == command.arg.short) {
-        parsedCommands.push([args[key], command]);
+        parsedCommands.push({ flag: args[key], command });
         validArg = true;
       }
     }
