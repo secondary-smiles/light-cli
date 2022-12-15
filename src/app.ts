@@ -8,7 +8,7 @@ async function main() {
   const program = parse();
   runCommands(program.app)
 
-  // logger.log(program);
+  
 }
 
 await main().catch((err) => {
