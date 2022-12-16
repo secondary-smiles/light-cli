@@ -3,6 +3,13 @@
   "remote": {
     "https://deno.land/std@0.167.0/_util/asserts.ts": "d0844e9b62510f89ce1f9878b046f6a57bf88f208a10304aab50efcb48365272",
     "https://deno.land/std@0.167.0/flags/mod.ts": "4f50ec6383c02684db35de38b3ffb2cd5b9fcfcc0b1147055d1980c49e82521c",
-    "https://deno.land/std@0.167.0/fmt/colors.ts": "03ad95e543d2808bc43c17a3dd29d25b43d0f16287fe562a0be89bf632454a12"
+    "https://deno.land/std@0.167.0/fmt/colors.ts": "03ad95e543d2808bc43c17a3dd29d25b43d0f16287fe562a0be89bf632454a12",
+    "https://deno.land/std@0.168.0/_util/asserts.ts": "d0844e9b62510f89ce1f9878b046f6a57bf88f208a10304aab50efcb48365272",
+    "https://deno.land/std@0.168.0/collections/_utils.ts": "fd759867be7a0047a1fa89ec89f7b58ebe3f2f7f089a8f4e416eb30c5d764868",
+    "https://deno.land/std@0.168.0/collections/deep_merge.ts": "0303cca7697646c5464ecb3337d494602056babae4f09baf6619f1043ba7eb6d",
+    "https://deno.land/std@0.168.0/encoding/_toml/parser.ts": "6de38ea8e4dd5571c994eee5ccb4fb8fa920dd9022623209235020e815dd1f67",
+    "https://deno.land/std@0.168.0/encoding/toml.ts": "d5772456392125a5cc5524930936eb5c82101c8c12ccfdc4fde6622a3fad838a",
+    "https://deno.land/std@0.168.0/flags/mod.ts": "4f50ec6383c02684db35de38b3ffb2cd5b9fcfcc0b1147055d1980c49e82521c",
+    "https://deno.land/std@0.168.0/fmt/colors.ts": "03ad95e543d2808bc43c17a3dd29d25b43d0f16287fe562a0be89bf632454a12"
   }
 }
