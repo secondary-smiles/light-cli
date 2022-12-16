@@ -3,6 +3,7 @@ import {bold, underline, brightGreen, gray} from "fmt/colors.ts"
 import {AllCommands} from "./mod.ts";
 import { Arg, Command } from "lib/cli/commands/types.ts";
 import {logger} from "logger";
+import {globals} from "globals"
 
 const args: Arg = {
     name: "Version",
@@ -12,7 +13,7 @@ const args: Arg = {
 };
 
 function run() {
-    logger.log(`light - ${globalThis.app.static.version}`);
+    logger.log(`light ${globals.static.version}`);
 }
 
 export function get() {

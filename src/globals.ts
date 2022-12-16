@@ -9,10 +9,12 @@ interface StaticGlobals {
   version: string;
 }
 
-// globalThis extension
-declare global {
-  const app: Globals;
-}
+const staticGlobals: StaticGlobals = {
+  version: "0.0.1",
+};
 
-// Set parameters
-globalThis.app.static.version = "0.0.1";
+const globals: Globals = {
+  static: staticGlobals,
+};
+
+export { globals };

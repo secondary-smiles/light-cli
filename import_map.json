@@ -6,6 +6,7 @@
     "lib/": "./src/lib/",
 
     "error": "./src/lib/util/error/mod.ts",
-    "logger": "./src/lib/util/logging/mod.ts"
+    "logger": "./src/lib/util/logging/mod.ts",
+    "globals": "./src/globals.ts"
   }
 }
