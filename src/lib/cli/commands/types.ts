@@ -9,9 +9,11 @@ class Command {
   arg: Arg;
 
   run: Function;
+  needsProgram: boolean;
 
-  constructor(arg: Arg, run: Function) {
+  constructor(arg: Arg, run: Function, needProgram=true) {
     this.arg = arg;
+    this.needsProgram = needProgram;
     this.run = run;
   }
 }

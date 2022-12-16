@@ -1,8 +1,8 @@
-import {bold, underline, brightGreen, gray} from "fmt/colors.ts"
+import { bold, underline, brightGreen, gray } from "fmt/colors.ts";
 
-import {AllCommands} from "./mod.ts";
+import { AllCommands } from "./mod.ts";
 import { Arg, Command } from "lib/cli/commands/types.ts";
-import {logger} from "logger";
+import { logger } from "logger";
 
 const args: Arg = {
   name: "Help",
@@ -11,9 +11,9 @@ const args: Arg = {
   short: "h",
 };
 
-function run() {
+function run(): never {
   const USAGE = `light [${bold("FLAGS")}] ${brightGreen("+")}<${bold(
-      "SOURCE"
+    "SOURCE"
   )}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
   const TAB = "  ";
 
@@ -47,5 +47,5 @@ function run() {
 }
 
 export function get() {
-  return new Command(args, run);
+  return new Command(args, run, false);
 }

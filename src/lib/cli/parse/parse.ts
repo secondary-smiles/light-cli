@@ -1,5 +1,4 @@
 import { Problem } from "error";
-import { logger } from "logger";
 
 import { parse as parseAppFlags, Args as ParsedArgs } from "flags/mod.ts";
 import { AllCommands } from "lib/cli/commands/mod.ts";
@@ -10,15 +9,29 @@ import {
   Program,
   CommandGroup,
 } from "./types.ts";
+import { globals } from "../../../globals.ts";
 
 function parse(args = Deno.args) {
   const preParsedArgs = separateProgramAndAppArgs(args);
 
   const parsedCommands = parseCommands(preParsedArgs.rawAppArgs);
+  let parsedProgram = parseProgramCommands(preParsedArgs.rawProgramArgs);
+
+  if (!parsedProgram) {
+    if (globals.parse.never) {
+      // We don't actually need a program if the command invoked returns never
+      parsedProgram = {
+        program: "",
+        source: "",
+      };
+    } else {
+      throw new Problem("flags supplied require source and program");
+    }
+  }
 
   const program: Program = {
     app: parsedCommands,
-    program: preParsedArgs.program,
+    program: parsedProgram,
   };
 
   return program;
@@ -36,16 +49,22 @@ function separateProgramAndAppArgs(args: string[]): PreparsedArgs {
     }
   });
 
-  const programCommands = parseProgramCommands(programArgs);
+  if (programArgs.length == 0 && appArgs.length == 0) {
+    appArgs = args;
+  }
+
   const parsedAppArgs = parseAppFlags(appArgs);
 
   return {
     rawAppArgs: parsedAppArgs,
-    program: programCommands,
+    rawProgramArgs: programArgs,
   };
 }
 
 function parseProgramCommands(args: string[]) {
+  // Check program is needed
+  if (args.length == 0 || globals.parse.never) return null;
+
   // Validation checks
   if (args.length < 2)
     throw new Problem("source and program must be specified");
@@ -80,6 +99,10 @@ function parseCommands(args: ParsedArgs) {
 
       if (key == command.arg.long || key == command.arg.short) {
         parsedCommands.push({ flag: args[key], command });
+
+        if (!command.needsProgram) {
+          globals.parse.never = true;
+        }
         validArg = true;
       }
     }

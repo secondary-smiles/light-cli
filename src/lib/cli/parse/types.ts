@@ -1,27 +1,25 @@
 import { Args as ParsedArgs } from "flags/mod.ts";
 import { Command } from "lib/cli/commands/types.ts";
 
-type Flag = string | number | boolean;
-
 interface Program {
   app: CommandGroup[];
   program: ProgramCommands;
 }
 
 interface CommandGroup {
-  flag: Flag;
+  flag: string;
   command: Command;
 }
 
 interface PreparsedArgs {
   rawAppArgs: ParsedArgs;
-  program: ProgramCommands;
+  rawProgramArgs: string[];
 }
 
 interface ProgramCommands {
   source: string;
   program: string;
-  args?: Flag[];
+  args?: string[];
 }
 
-export type { PreparsedArgs, ProgramCommands, Program, Flag, CommandGroup };
+export type { PreparsedArgs, ProgramCommands, Program, CommandGroup };
