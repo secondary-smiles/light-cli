@@ -9,6 +9,7 @@ const args: Arg = {
 };
 
 function run() {
+  globals.command.silent = false;
   globals.command.verbose = true;
 }
 

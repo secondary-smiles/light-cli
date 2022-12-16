@@ -1,5 +1,7 @@
 import { bold, brightYellow, red, blue, gray } from "fmt/colors.ts";
 
+import { globals } from "globals";
+
 interface LoaderData {
   loading: boolean;
   icons: string[];
@@ -38,31 +40,42 @@ class Logger {
   }
 
   log(message: any) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     //TODO: Check verbosity
     console.log(message);
   }
 
+  verbose(...message: any) {
+    if (globals.command.verbose) {
+      console.log(...message);
+    }
+  }
+
   notice(message: any) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     console.info(blue(this.prefix + message));
   }
 
   warn(message: any) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     console.warn(brightYellow(this.prefix + message));
   }
 
   error(message: any) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     console.error(red(this.prefix + message));
   }
 
   load(message = this.loaderData.message, speed = 50) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     this.loaderData.loading = true;
@@ -81,6 +94,7 @@ class Logger {
   }
 
   clear(lines: number) {
+    if (globals.command.silent) return;
     this.stopLoad();
 
     for (let i = 0; i < lines; i++) {

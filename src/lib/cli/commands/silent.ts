@@ -9,6 +9,8 @@ const args: Arg = {
 };
 
 function run() {
+    // Not allowed to have both at the same time, whatever gets executed last has priority
+    globals.command.verbose = false;
     globals.command.silent = true;
 }
 

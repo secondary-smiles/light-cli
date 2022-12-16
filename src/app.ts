@@ -7,8 +7,6 @@ import {runCommands} from "lib/cli/utils/run.ts";
 async function main() {
   const program = parse();
   runCommands(program.app)
-
-  
 }
 
 await main().catch((err) => {
