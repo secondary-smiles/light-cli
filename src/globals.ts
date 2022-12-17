@@ -9,6 +9,7 @@ interface Globals {
 // Version, name, urls. Things that can be static when compiled
 interface StaticGlobals {
   version: string;
+  provides_default: string;
 }
 
 // Things set while parsing
@@ -25,6 +26,7 @@ interface CommandGlobals {
 
 const staticGlobals: StaticGlobals = {
   version: "0.0.1",
+  provides_default: "light/provides.toml",
 };
 
 const parseGlobals: ParseGlobals = {

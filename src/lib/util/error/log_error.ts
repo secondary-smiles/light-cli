@@ -5,11 +5,13 @@ import { logger } from "logger";
 import { globals } from "globals";
 
 function log_error(reason: Problem) {
-  if (globals.command.verbose) {
-    throw reason;
-  }
   const message = `${reason.message} ${gray(`(${reason.code})`)}`;
   logger.error(message);
+
+  if (globals.command.verbose) {
+    //TODO: Don't throw, use Deno.stack or whatever it is
+    throw reason;
+  }
 
   // Normal Error was passed without code
   if (!reason.code) {

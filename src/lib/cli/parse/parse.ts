@@ -108,7 +108,7 @@ function parseCommands(args: ParsedArgs) {
     }
 
     if (!validArg) {
-      throw new Problem(`arg '${key}' not recognized`);
+      throw new Problem(`flag '${key}' not recognized`);
     }
   }
 
