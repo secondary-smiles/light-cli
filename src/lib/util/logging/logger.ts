@@ -48,6 +48,8 @@ class Logger {
   }
 
   verbose(...message: any) {
+    this.stopLoad();
+
     if (globals.command.verbose) {
       console.log(...message);
     }
