@@ -5,6 +5,7 @@ import { globals } from "globals";
 
 async function fetchToml(source: string) {
   const url = preprocessUrl(source);
+  logger.load(`fetching ${url.href}`)
   logger.verbose(url);
 
   const response = await fetch(url);

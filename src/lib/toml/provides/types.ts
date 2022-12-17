@@ -7,4 +7,4 @@ interface Link {
   source: string;
 }
 
-export type { Provides };
+export type { Provides, Link };
