@@ -28,6 +28,10 @@ async function main() {
     program.program.program
   );
   logger.verbose(link);
+
+  const action = await fetchToml(link.source);
+  logger.verbose(action)
+
 }
 
 await main().catch((err) => {
