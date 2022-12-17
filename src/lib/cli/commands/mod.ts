@@ -1,6 +1,7 @@
 import { Command } from "./types.ts";
 
 // COMMANDS
+import * as core from "./core.ts";
 import * as verbose from "./verbose.ts";
 import * as silent from "./silent.ts";
 
@@ -12,6 +13,7 @@ interface CommandsIndex {
 }
 
 const AllCommands: CommandsIndex = {
+  core: core.get(),
   verbose: verbose.get(),
   silent: silent.get(),
 

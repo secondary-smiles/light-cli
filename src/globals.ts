@@ -18,8 +18,9 @@ interface ParseGlobals {
 
 // Globals that commands set
 interface CommandGlobals {
-  verbose: boolean,
-  silent: boolean,
+  verbose: boolean;
+  silent: boolean;
+  core: boolean;
 }
 
 const staticGlobals: StaticGlobals = {
@@ -32,8 +33,9 @@ const parseGlobals: ParseGlobals = {
 
 const commandGlobals: CommandGlobals = {
   verbose: false,
-  silent: false
-}
+  silent: false,
+  core: false,
+};
 
 const globals: Globals = {
   static: staticGlobals,
