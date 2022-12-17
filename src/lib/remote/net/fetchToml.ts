@@ -18,6 +18,7 @@ async function fetchToml(source: string) {
 
   const data = await response.text();
 
+  logger.stopLoad();
   return serializeToToml(data);
 }
 

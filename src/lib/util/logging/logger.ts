@@ -43,14 +43,12 @@ class Logger {
     if (globals.command.silent) return;
     this.stopLoad();
 
-    //TODO: Check verbosity
     console.log(message);
   }
 
   verbose(...message: any) {
-    this.stopLoad();
-
     if (globals.command.verbose) {
+      this.stopLoad();
       console.log(...message);
     }
   }

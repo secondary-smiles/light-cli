@@ -5,18 +5,19 @@ import { logger } from "logger";
 import { globals } from "globals";
 
 function log_error(reason: Problem) {
+  // Normal Error was passed without code
+  if (!reason.code) {
+    reason.code = 1;
+  }
+
   const message = `${reason.message} ${gray(`(${reason.code})`)}`;
   logger.error(message);
 
   if (globals.command.verbose) {
     //TODO: Don't throw, use Deno.stack or whatever it is
-    throw reason;
+    console.trace();
   }
 
-  // Normal Error was passed without code
-  if (!reason.code) {
-    reason.code = 1;
-  }
   Deno.exit(reason.code);
 }
 

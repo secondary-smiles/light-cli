@@ -5,8 +5,8 @@ import { parse } from "lib/cli/parse/parse.ts";
 import { runCommands } from "lib/cli/utils/run.ts";
 
 import { fetchToml } from "lib/remote/net/fetchToml.ts";
-import {globals} from "globals";
-import {isProvides} from "lib/toml/provides/valid.ts";
+import { globals } from "globals";
+import { isProvides } from "lib/toml/provides/valid.ts";
 
 async function main() {
   const program = parse();
@@ -16,9 +16,10 @@ async function main() {
   logger.verbose(globals);
 
   const toml = await fetchToml(program.program.source);
-  logger.verbose(toml)
-  logger.log(isProvides(toml));
-
+  logger.verbose(toml);
+  if (!isProvides(toml)) {
+    throw new Problem("received provides file is invalid")
+  }
 }
 
 await main().catch((err) => {
