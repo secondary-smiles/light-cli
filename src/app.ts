@@ -9,6 +9,7 @@ import { fetchToml } from "lib/remote/net/fetchToml.ts";
 import { isProvides } from "lib/toml/provides/valid.ts";
 import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
 import { Provides } from "lib/toml/provides/types.ts";
+import { isAction } from "lib/toml/action/valid.ts";
 
 async function main() {
   const program = parse();
@@ -30,8 +31,8 @@ async function main() {
   logger.verbose(link);
 
   const action = await fetchToml(link.source);
-  logger.verbose(action)
-
+  logger.verbose(action);
+  logger.log(isAction(action));
 }
 
 await main().catch((err) => {
