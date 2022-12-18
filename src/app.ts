@@ -5,7 +5,7 @@ import { logger } from "logger";
 import { parse } from "lib/cli/parse/parse.ts";
 import { runCommands } from "lib/cli/utils/run.ts";
 
-import { fetchToml } from "lib/remote/net/fetchToml.ts";
+import { fetchToml } from "lib/coordinate/net/fetchToml.ts";
 import { isProvides } from "lib/toml/provides/valid.ts";
 import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
 import { Provides } from "lib/toml/provides/types.ts";
