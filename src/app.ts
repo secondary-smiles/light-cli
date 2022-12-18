@@ -32,7 +32,9 @@ async function main() {
 
   const action = await fetchToml(link.source);
   logger.verbose(action);
-  logger.log(isAction(action));
+  if (!isAction(action)) {
+    throw new Problem("received action file is invalid");
+  }
 }
 
 await main().catch((err) => {
