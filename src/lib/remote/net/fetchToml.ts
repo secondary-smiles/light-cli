@@ -1,11 +1,11 @@
-import { parse as parseToml } from "encoding/toml.ts";
 import { Problem } from "error";
 import { logger } from "logger";
 import { globals } from "globals";
 
+import {serializeToToml} from "lib/toml/util/serialize.ts";
+
 async function fetchToml(source: string) {
   const url = preprocessUrl(source);
-  logger.load(`fetching ${url.href}`)
   logger.verbose(url);
 
   const response = await fetch(url);
@@ -18,16 +18,7 @@ async function fetchToml(source: string) {
 
   const data = await response.text();
 
-  logger.stopLoad();
   return serializeToToml(data);
-}
-
-function serializeToToml(data: string) {
-  try {
-    return parseToml(data);
-  } catch (err) {
-    throw new Problem(`invalid toml: ${err}`);
-  }
 }
 
 function preprocessUrl(url: string) {
@@ -42,7 +33,7 @@ function preprocessUrl(url: string) {
   } else if (url.split("/").length > 1) {
     return new URL("https://" + url);
   } else {
-    return new URL("https://" + url + "/" + globals.static.provides_default);
+    return new URL("https://" + url + "/light/provides.toml");
   }
 }
 

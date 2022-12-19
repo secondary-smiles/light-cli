@@ -9,7 +9,8 @@ interface Globals {
 // Version, name, urls. Things that can be static when compiled
 interface StaticGlobals {
   version: string;
-  provides_default: string;
+  light_home_location: string;
+  core_location: string
 }
 
 // Things set while parsing
@@ -26,7 +27,8 @@ interface CommandGlobals {
 
 const staticGlobals: StaticGlobals = {
   version: "0.0.1",
-  provides_default: "light/provides.toml",
+  light_home_location: Deno.env.get("HOME") + "/.light/light",
+  core_location: Deno.env.get("HOME") + "/.light/light/light-core/www"
 };
 
 const parseGlobals: ParseGlobals = {
