@@ -37,7 +37,7 @@ function interpolateVersion(action: Action) {
 
 function interpolateBinloc(action: Action) {
   const binloc =
-    globals.static.wd_location +
+    globals.static.wd_install_location +
     `/${action.provides.name}/${globals.parse.interpolated_version}/bin`;
 
   globals.parse.interpolated_binloc = binloc;

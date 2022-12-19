@@ -11,6 +11,7 @@ interface StaticGlobals {
   app_version: string;
   light_home_location: string;
   core_location: string;
+  wd_install_location: string;
   wd_location: string;
 }
 
@@ -33,7 +34,8 @@ const staticGlobals: StaticGlobals = {
   app_version: "0.0.1",
   light_home_location: Deno.env.get("HOME") + "/.light/light",
   core_location: Deno.env.get("HOME") + "/.light/light/light-core/www",
-  wd_location: Deno.env.get("HOME") + "/.light/light/d",
+  wd_location: Deno.env.get("HOME") + "/.light",
+  wd_install_location: Deno.env.get("HOME") + "/.light/light/d",
 };
 
 const parseGlobals: ParseGlobals = {

@@ -13,6 +13,7 @@ import { isProvides } from "lib/toml/provides/valid.ts";
 import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
 import { isAction } from "lib/toml/action/valid.ts";
 import { interpolateAction } from "lib/toml/action/interpolates.ts";
+import { isCached } from "lib/local/run/cached.ts";
 
 async function main() {
   const program = parse();
@@ -40,8 +41,12 @@ async function main() {
   }
 
   action = interpolateAction(action as unknown as Action);
-  logger.verbose(action)
+  logger.verbose(action);
 
+  if (await isCached(program, action as unknown as Action)) {
+    console.log("cached");
+    // TODO: Run from cache
+  }
 }
 
 await main().catch((err) => {
