@@ -1,6 +1,7 @@
-import { Arg, Command } from "lib/cli/commands/types.ts";
-import { logger } from "logger";
 import { globals } from "globals";
+
+import { Problem } from "error";
+import { Arg, Command } from "lib/cli/commands/types.ts";
 
 const args: Arg = {
   name: "Program Version",
@@ -10,7 +11,11 @@ const args: Arg = {
 };
 
 function run(data: string) {
-  globals.command.program_version = data;
+  if (typeof data == "string") {
+    globals.command.program_version = data;
+  } else {
+    throw new Problem(`${data} is not a valid semver`);
+  }
 }
 
 export function get() {

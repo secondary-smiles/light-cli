@@ -11,7 +11,7 @@ interface Metadata {
   description: string;
   dynamic: boolean;
   default: string;
-  source: string | URL;
+  source: string;
   install: ActionInstall;
 }
 

@@ -20,9 +20,10 @@ function interpolateVersion(action: Action) {
 
   globals.parse.interpolated_version = version;
 
-  action.provides.source = new URL(
-    action.provides.source.toString().split("{{version}}").join(version)
-  );
+  action.provides.source = action.provides.source
+    .toString()
+    .split("{{version}}")
+    .join(version);
 
   action.provides.install.cmd = action.provides.install.cmd
     .split("{{version}}")

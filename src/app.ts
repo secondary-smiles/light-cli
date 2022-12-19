@@ -14,6 +14,7 @@ import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
 import { isAction } from "lib/toml/action/valid.ts";
 import { interpolateAction } from "lib/toml/action/interpolates.ts";
 import { isCached } from "lib/local/run/cached.ts";
+import { install } from "lib/install/mod.ts";
 
 async function main() {
   const program = parse();
@@ -46,7 +47,12 @@ async function main() {
   if (await isCached(program, action as unknown as Action)) {
     console.log("cached");
     // TODO: Run from cache
+    return;
   }
+
+  // TODO: Install Deps
+
+  install(action as unknown as Action);
 }
 
 await main().catch((err) => {
