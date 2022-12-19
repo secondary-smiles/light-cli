@@ -10,7 +10,7 @@ interface Globals {
 interface StaticGlobals {
   version: string;
   light_home_location: string;
-  core_location: string
+  core_location: string;
 }
 
 // Things set while parsing
@@ -23,12 +23,13 @@ interface CommandGlobals {
   verbose: boolean;
   silent: boolean;
   core: boolean;
+  program_version: string; // TODO: Implement SemVer
 }
 
 const staticGlobals: StaticGlobals = {
   version: "0.0.1",
   light_home_location: Deno.env.get("HOME") + "/.light/light",
-  core_location: Deno.env.get("HOME") + "/.light/light/light-core/www"
+  core_location: Deno.env.get("HOME") + "/.light/light/light-core/www",
 };
 
 const parseGlobals: ParseGlobals = {
@@ -39,6 +40,7 @@ const commandGlobals: CommandGlobals = {
   verbose: false,
   silent: false,
   core: false,
+  program_version: "",
 };
 
 const globals: Globals = {
