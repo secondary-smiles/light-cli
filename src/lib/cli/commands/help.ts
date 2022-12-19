@@ -11,7 +11,7 @@ const args: Arg = {
   short: "h",
 };
 
-function run(): never {
+function run() {
   const USAGE = `light [${bold("FLAGS")}] ${brightGreen("+")}<${bold(
     "SOURCE"
   )}> <${gray("SOURCE PROGRAM")}> [${gray("SOURCE PROGRAM FLAGS")}]`;
@@ -42,8 +42,6 @@ function run(): never {
 
     logger.log(TAB + bold(column1) + TAB + column2);
   }
-
-  Deno.exit(0);
 }
 
 export function get() {

@@ -9,10 +9,8 @@ const args: Arg = {
   short: "V",
 };
 
-function run(): never {
+function run() {
   logger.log(`light ${globals.static.version}`);
-
-  Deno.exit(0);
 }
 
 export function get() {
