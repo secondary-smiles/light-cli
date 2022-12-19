@@ -101,6 +101,7 @@ class Logger {
       escapeCodes.stdoutWrite(escapeCodes.clearLine);
       escapeCodes.stdoutWrite(escapeCodes.lineUp);
     }
+    escapeCodes.stdoutWrite(escapeCodes.clearLine);
   }
 
   private processLoad() {
