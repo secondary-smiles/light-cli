@@ -18,7 +18,7 @@ function run(): never {
   const TAB = "  ";
 
   // About
-  logger.log(bold("Placeholder about text"));
+  logger.log(bold("A lightweight, friendly package manager"));
 
   // Usage
   logger.log(bold(underline("Usage:")));
