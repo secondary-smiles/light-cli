@@ -9,11 +9,11 @@ async function fetchToml(source: string) {
   if (globals.command.core) {
     const data = await coreFetchToml(source);
     logger.stopLoad();
-    return data;
+    return data as unknown;
   } else {
     const data = await netFetchToml(source);
     logger.stopLoad();
-    return data;
+    return data as unknown;
   }
 }
 

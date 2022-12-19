@@ -9,8 +9,7 @@ async function fetchToml(source: string) {
   }
 
   const dirLoc = globals.static.core_location + `/${source}`;
-
-  logger.log(dirLoc)
+  logger.verbose(dirLoc)
 
   const data = await Deno.readTextFile(dirLoc);
   return serializeToToml(data);

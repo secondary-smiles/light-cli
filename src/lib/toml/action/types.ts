@@ -1,7 +1,7 @@
 import { Link } from "lib/toml/provides/types.ts";
 
 interface Action {
-  provides: string;
+  provides: Metadata;
   dependencies?: Link[];
 }
 
@@ -11,12 +11,12 @@ interface Metadata {
   description: string;
   dynamic: boolean;
   default: string;
-  source: URL;
-  cmd: ActionInstall;
+  source: string | URL;
+  install: ActionInstall;
 }
 
 interface ActionInstall {
-  install: string;
+  cmd: string;
   test: string;
 }
 

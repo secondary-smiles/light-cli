@@ -5,11 +5,14 @@ import { logger } from "logger";
 import { parse } from "lib/cli/parse/parse.ts";
 import { runCommands } from "lib/cli/utils/run.ts";
 
+import { Provides } from "lib/toml/provides/types.ts";
+import { Action } from "lib/toml/action/types.ts";
+
 import { fetchToml } from "lib/coordinate/net/fetchToml.ts";
 import { isProvides } from "lib/toml/provides/valid.ts";
 import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
-import { Provides } from "lib/toml/provides/types.ts";
 import { isAction } from "lib/toml/action/valid.ts";
+import { interpolateAction } from "lib/toml/action/interpolates.ts";
 
 async function main() {
   const program = parse();
@@ -30,11 +33,15 @@ async function main() {
   );
   logger.verbose(link);
 
-  const action = await fetchToml(link.source);
+  let action = await fetchToml(link.source);
   logger.verbose(action);
   if (!isAction(action)) {
     throw new Problem("received action file is invalid");
   }
+
+  action = interpolateAction(action as unknown as Action);
+  logger.verbose(action)
+
 }
 
 await main().catch((err) => {

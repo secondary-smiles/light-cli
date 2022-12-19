@@ -10,7 +10,7 @@ const args: Arg = {
 };
 
 function run() {
-  logger.log(`light ${globals.static.version}`);
+  logger.log(`light ${globals.static.app_version}`);
 }
 
 export function get() {

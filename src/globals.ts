@@ -8,14 +8,17 @@ interface Globals {
 
 // Version, name, urls. Things that can be static when compiled
 interface StaticGlobals {
-  version: string;
+  app_version: string;
   light_home_location: string;
   core_location: string;
+  wd_location: string;
 }
 
 // Things set while parsing
 interface ParseGlobals {
   never: boolean;
+  interpolated_version: string; // TODO SemVer
+  interpolated_binloc: string;
 }
 
 // Globals that commands set
@@ -27,13 +30,16 @@ interface CommandGlobals {
 }
 
 const staticGlobals: StaticGlobals = {
-  version: "0.0.1",
+  app_version: "0.0.1",
   light_home_location: Deno.env.get("HOME") + "/.light/light",
   core_location: Deno.env.get("HOME") + "/.light/light/light-core/www",
+  wd_location: Deno.env.get("HOME") + "/.light/light/d",
 };
 
 const parseGlobals: ParseGlobals = {
   never: false,
+  interpolated_version: "",
+  interpolated_binloc: ""
 };
 
 const commandGlobals: CommandGlobals = {

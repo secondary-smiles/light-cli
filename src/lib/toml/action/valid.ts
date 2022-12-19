@@ -39,10 +39,6 @@ function isMetadata(object: any) {
     return false;
   }
 
-  if (!(object.source instanceof URL)) {
-    object.source = new URL(object.source);
-  }
-
   if (!("install" in object)) {
     return false;
   }
