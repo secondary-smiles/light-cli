@@ -41,6 +41,8 @@ function interpolateBinloc(action: Action) {
     globals.static.wd_install_location +
     `/${action.provides.name}/${globals.parse.interpolated_version}`;
 
+  globals.parse.interpolated_this_program = progloc;
+
   globals.parse.interpolated_sourceloc = progloc + "/raw";
   globals.parse.interpolated_binloc = progloc + "/bin";
 

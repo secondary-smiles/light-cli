@@ -21,6 +21,7 @@ interface ParseGlobals {
   interpolated_version: string; // TODO SemVer
   interpolated_sourceloc: string;
   interpolated_binloc: string;
+  interpolated_this_program: string;
 }
 
 // Globals that commands set
@@ -44,6 +45,7 @@ const parseGlobals: ParseGlobals = {
   interpolated_version: "",
   interpolated_sourceloc: "",
   interpolated_binloc: "",
+  interpolated_this_program: "",
 };
 
 const commandGlobals: CommandGlobals = {

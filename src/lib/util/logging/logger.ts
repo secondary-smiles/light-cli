@@ -39,11 +39,11 @@ class Logger {
     };
   }
 
-  log(message: any) {
+  log(...message: any) {
     if (globals.command.silent) return;
     this.stopLoad();
 
-    console.log(message);
+    console.log(...message);
   }
 
   verbose(...message: any) {
