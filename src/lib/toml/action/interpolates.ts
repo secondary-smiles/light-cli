@@ -37,19 +37,20 @@ function interpolateVersion(action: Action) {
 }
 
 function interpolateBinloc(action: Action) {
-  const binloc =
+  const progloc =
     globals.static.wd_install_location +
-    `/${action.provides.name}/${globals.parse.interpolated_version}/bin`;
+    `/${action.provides.name}/${globals.parse.interpolated_version}`;
 
-  globals.parse.interpolated_binloc = binloc;
+  globals.parse.interpolated_sourceloc = progloc + "/raw";
+  globals.parse.interpolated_binloc = progloc + "/bin";
 
   action.provides.install.cmd = action.provides.install.cmd
     .split("{{binloc}}")
-    .join(binloc);
+    .join(globals.parse.interpolated_binloc);
 
   action.provides.install.test = action.provides.install.test
     .split("{{binloc}}")
-    .join(binloc);
+    .join(globals.parse.interpolated_binloc);
 
   return action;
 }

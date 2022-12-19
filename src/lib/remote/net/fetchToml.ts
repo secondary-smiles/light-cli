@@ -13,7 +13,7 @@ async function fetchToml(source: string) {
 
   if (!response.ok) {
     throw new Problem(
-      `got server response '${response.status}' from '${url.href}'`
+      `got invalid server response '${response.status}' from '${url.href}'`
     );
   }
 

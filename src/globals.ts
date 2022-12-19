@@ -19,6 +19,7 @@ interface StaticGlobals {
 interface ParseGlobals {
   never: boolean;
   interpolated_version: string; // TODO SemVer
+  interpolated_sourceloc: string;
   interpolated_binloc: string;
 }
 
@@ -41,7 +42,8 @@ const staticGlobals: StaticGlobals = {
 const parseGlobals: ParseGlobals = {
   never: false,
   interpolated_version: "",
-  interpolated_binloc: ""
+  interpolated_sourceloc: "",
+  interpolated_binloc: "",
 };
 
 const commandGlobals: CommandGlobals = {
