@@ -40,7 +40,7 @@ async function runAsBash(cwd: string, bash: string) {
     throw new Problem("run cancelled by user");
   }
 
-  logger.load("running bash command")
+  logger.load()
 
   const runFile = cwd + "/light-run.sh";
   await ensureFile(runFile);

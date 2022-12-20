@@ -1,4 +1,5 @@
 import { globals } from "globals";
+import { logger } from "logger";
 
 import { ensureDir } from "fs/mod.ts";
 
@@ -20,17 +21,21 @@ async function install(action: Action) {
   // Ensure binloc exists
   ensureDir(globals.parse.interpolated_binloc);
 
+  logger.load(`compiling and installing '${action.provides.name}'`);
   // Run install cmd
   await runAsBash(
     globals.parse.interpolated_this_program + "/raw/decompress",
     action.provides.install.cmd
   );
 
+  logger.load(`testing '${action.provides.name}'`);
   // run test cmd
   await runAsBash(
     globals.parse.interpolated_binloc,
     action.provides.install.test
   );
+
+  logger.stopLoad();
 
   // Move to final binloc
   await ensureDir(globals.parse.final_bin_location);
