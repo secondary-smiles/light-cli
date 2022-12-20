@@ -1,11 +1,11 @@
-import {logger} from "logger";
+import { Problem } from "error";
+import { logger } from "logger";
 
 import { Prompt } from "lib/util/interact/types.ts";
 import { promptUser } from "lib/util/interact/prompt.ts";
 
 async function runAsBash(cwd: string, bash: string) {
-  // console.log(cwd);
-  // console.log(bash);
+  logger.verbose(cwd, bash);
 
   // Define options
   const run: Prompt = {
@@ -22,12 +22,19 @@ async function runAsBash(cwd: string, bash: string) {
 
   const view: Prompt = {
     key: "v",
-    run: () => {console.log("viewing")},
+    run: () => {
+      console.log("viewing");
+    },
     recursive: true,
   };
 
-  const option = promptUser("program requires running an untested bash script\n[r]un, [c]ancel, [v]iew", [run, cancel, view]);
-  logger.log(option)
+  const option = promptUser(
+    "program requires running an untested bash script\n[r]un, [c]ancel, [v]iew",
+    [run, cancel, view]
+  );
+  if (!option) {
+    throw new Problem("run cancelled by user");
+  }
 }
 
 export { runAsBash };

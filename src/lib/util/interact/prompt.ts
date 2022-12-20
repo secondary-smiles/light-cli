@@ -5,7 +5,9 @@ import { Prompt } from "./types.ts";
 function promptUser(user_prompt: string, prompts: Prompt[]): boolean {
   logger.log(user_prompt);
 
-  const option = prompt(">");
+  let option = prompt(">");
+  option = option ? option : "";
+
   logger.clear(user_prompt.split("\n").length + 1);
 
   let returnVal = false;
@@ -28,7 +30,7 @@ function promptUser(user_prompt: string, prompts: Prompt[]): boolean {
   });
 
   if (!recognized) {
-    return promptUser(`invalid option '${option}'\n${user_prompt}`, prompts);
+    returnVal = promptUser(user_prompt, prompts);
   }
 
   return returnVal;
