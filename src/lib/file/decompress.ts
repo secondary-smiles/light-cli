@@ -6,7 +6,6 @@ import { ensureDir } from "fs/mod.ts";
 
 async function decompress(file: string, out: string) {
   logger.load(`decompressing ${file}`);
-  console.log(out)
   await ensureDir(out);
   const command: Deno.RunOptions = {
     cmd: ["tar", "xf", file, "-C", out],

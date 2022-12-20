@@ -75,7 +75,7 @@ class Logger {
   }
 
   load(message = this.loaderData.message, speed = 50) {
-    if (globals.command.silent) return;
+    if (globals.command.silent || globals.command.verbose) return;
     this.stopLoad();
 
     this.loaderData.loading = true;

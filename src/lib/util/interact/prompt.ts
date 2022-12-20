@@ -4,7 +4,7 @@ import { logger } from "logger";
 import { Prompt } from "./types.ts";
 
 function promptUser(user_prompt: string, prompts: Prompt[]): boolean {
-  if (globals.command.yes) {
+  if (globals.command.yes || globals.command.core) {
     return true;
   }
 

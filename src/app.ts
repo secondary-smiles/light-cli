@@ -46,7 +46,6 @@ async function main() {
   logger.verbose(action);
 
   if (await isCached(program, action as unknown as Action)) {
-    console.log("cached");
     // TODO: Run from cache
     await runProgram(program, action as unknown as Action);
     return;
