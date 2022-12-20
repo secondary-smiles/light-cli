@@ -27,4 +27,4 @@ function isLink(object: any) {
   return true;
 }
 
-export { isProvides };
+export { isProvides, isLink };

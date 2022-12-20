@@ -2,7 +2,7 @@ import { globals } from "globals";
 
 import { Action } from "./types.ts";
 
-function interpolateAction(action: Action) {
+function interpolateAction(action: Action): Action {
   action = interpolateVersion(action);
   action = interpolateBinloc(action);
   action = interpolateCores(action);

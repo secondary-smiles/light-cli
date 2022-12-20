@@ -2,7 +2,7 @@ import { Link } from "lib/toml/provides/types.ts";
 
 interface Action {
   provides: Metadata;
-  dependencies?: Link[];
+  dependencies: Link[];
 }
 
 interface Metadata {

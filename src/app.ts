@@ -11,11 +11,11 @@ import { Action } from "lib/toml/action/types.ts";
 import { fetchToml } from "lib/coordinate/net/fetchToml.ts";
 import { isProvides } from "lib/toml/provides/valid.ts";
 import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
-import { isAction } from "lib/toml/action/valid.ts";
 import { interpolateAction } from "lib/toml/action/interpolates.ts";
 import { isCached } from "lib/local/run/cached.ts";
 import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
+import { isAction } from "./lib/toml/action/valid.ts";
 
 async function main() {
   const program = parse();
@@ -36,23 +36,27 @@ async function main() {
   );
   logger.verbose(link);
 
-  let action = await fetchToml(link.source);
-  logger.verbose(action);
-  if (!isAction(action)) {
+  const actionData = await fetchToml(link.source);
+  logger.verbose(actionData);
+  if (!isAction(actionData)) {
     throw new Problem("received action file is invalid");
   }
 
-  action = interpolateAction(action as unknown as Action);
+  let action: Action = actionData as unknown as Action;
+
+  action = interpolateAction(action);
   logger.verbose(action);
 
-  if (await isCached(program, action as unknown as Action)) {
+  if (await isCached(program, action)) {
     // TODO: Run from cache
-    await runProgram(program, action as unknown as Action);
+    await runProgram(program, action);
     return;
   }
 
   // TODO: Install Deps
+  action.dependencies.forEach((dep) => {
 
+  })
 
   await install(action as unknown as Action);
   logger.verbose(globals);

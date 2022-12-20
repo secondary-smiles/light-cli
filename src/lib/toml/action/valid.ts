@@ -1,3 +1,6 @@
+import { Link } from "lib/toml/provides/types.ts";
+import { isLink } from "../provides/valid.ts";
+
 function isAction(object: any) {
   if (!("provides" in object)) {
     return false;
@@ -9,6 +12,16 @@ function isAction(object: any) {
 
   if (!("dependencies" in object)) {
     object.dependencies = [];
+  } else {
+    let returnVal = true;
+    object.dependencies.forEach((link: Link) => {
+      if (!isLink(link)) {
+        returnVal = false;
+      }
+    });
+    if (!returnVal) {
+      return returnVal;
+    }
   }
 
   return true;
