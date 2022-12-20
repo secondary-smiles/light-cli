@@ -5,6 +5,8 @@ import { Action } from "./types.ts";
 function interpolateAction(action: Action) {
   action = interpolateVersion(action);
   action = interpolateBinloc(action);
+  action = interpolateCores(action);
+
   return action;
 }
 
@@ -53,6 +55,20 @@ function interpolateBinloc(action: Action) {
   action.provides.install.test = action.provides.install.test
     .split("{{binloc}}")
     .join(globals.parse.interpolated_binloc);
+
+  return action;
+}
+
+function interpolateCores(action: Action) {
+  const cores = window.navigator.hardwareConcurrency;
+
+  action.provides.install.cmd = action.provides.install.cmd
+    .split("{{cores}}")
+    .join(cores.toString());
+
+  action.provides.install.test = action.provides.install.test
+    .split("{{cores}}")
+    .join(cores.toString());
 
   return action;
 }
