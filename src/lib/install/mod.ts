@@ -1,5 +1,7 @@
 import { globals } from "globals";
 
+import { ensureDir } from "fs/mod.ts";
+
 import { Action } from "lib/toml/action/types.ts";
 
 import { fetchSource } from "lib/remote/net/fetchSource.ts";
@@ -14,16 +16,22 @@ async function install(action: Action) {
     globals.parse.interpolated_sourceloc + "/source",
     globals.parse.interpolated_this_program + "/raw/decompress"
   );
+
+  // Ensure binloc exists
+  ensureDir(globals.parse.interpolated_binloc);
+
   // Run install cmd
   await runAsBash(
     globals.parse.interpolated_this_program + "/raw/decompress",
     action.provides.install.cmd
   );
+
   // run test cmd
   await runAsBash(
     globals.parse.interpolated_binloc,
     action.provides.install.test
   );
+
   // Move to final binloc
 }
 
