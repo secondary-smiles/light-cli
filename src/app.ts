@@ -52,7 +52,9 @@ async function main() {
 
   // TODO: Install Deps
 
-  install(action as unknown as Action);
+  await install(action as unknown as Action);
+
+  logger.verbose(globals);
 }
 
 await main().catch((err) => {

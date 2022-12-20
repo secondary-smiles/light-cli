@@ -4,6 +4,7 @@ import { Action } from "lib/toml/action/types.ts";
 
 import { fetchSource } from "lib/remote/net/fetchSource.ts";
 import { decompress } from "lib/file/decompress.ts";
+import { runAsBash } from "./shell/bash.ts";
 
 async function install(action: Action) {
   // Download source
@@ -14,7 +15,15 @@ async function install(action: Action) {
     globals.parse.interpolated_this_program + "/raw/decompress"
   );
   // Run install cmd
+  await runAsBash(
+    globals.parse.interpolated_this_program + "/raw/decompress",
+    action.provides.install.cmd
+  );
   // run test cmd
+  await runAsBash(
+    globals.parse.interpolated_binloc,
+    action.provides.install.test
+  );
   // Move to final binloc
 }
 
