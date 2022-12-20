@@ -2,6 +2,8 @@ import { logger } from "logger";
 
 import { gray } from "fmt/colors.ts";
 
+import { highlightBash } from "./highlight.ts";
+
 function displayBashScript(title: string, script: string) {
   const lineLength = 41;
 
@@ -18,7 +20,7 @@ function displayBashScript(title: string, script: string) {
   const bottom = "+" + new Array(lineLength).join("-") + "+";
 
   logger.log(gray(top));
-  logger.log(script.trim());
+  logger.log(highlightBash(script.trim()));
   logger.log(gray(bottom));
 
   alert("");
