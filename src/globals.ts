@@ -28,6 +28,7 @@ interface ParseGlobals {
 // Globals that commands set
 interface CommandGlobals {
   verbose: boolean;
+  yes: boolean;
   silent: boolean;
   core: boolean;
   program_version: string; // TODO: Implement SemVer
@@ -52,6 +53,7 @@ const parseGlobals: ParseGlobals = {
 
 const commandGlobals: CommandGlobals = {
   verbose: false,
+  yes: false,
   silent: false,
   core: false,
   program_version: "",

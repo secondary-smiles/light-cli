@@ -1,8 +1,13 @@
+import { globals } from "globals";
 import { logger } from "logger";
 
 import { Prompt } from "./types.ts";
 
 function promptUser(user_prompt: string, prompts: Prompt[]): boolean {
+  if (globals.command.yes) {
+    return true;
+  }
+
   logger.log(user_prompt);
 
   let option = prompt(">");
