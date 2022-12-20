@@ -54,9 +54,7 @@ async function main() {
   }
 
   // TODO: Install Deps
-  action.dependencies.forEach((dep) => {
-
-  })
+  action.dependencies.forEach((dep) => {});
 
   await install(action as unknown as Action);
   logger.verbose(globals);

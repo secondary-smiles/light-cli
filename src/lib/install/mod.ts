@@ -8,6 +8,7 @@ import { Action } from "lib/toml/action/types.ts";
 import { fetchSource } from "lib/remote/net/fetchSource.ts";
 import { decompress } from "lib/file/decompress.ts";
 import { runAsBash } from "./shell/bash.ts";
+import { cleanupInstall } from "lib/util/cleanup/cleanup.ts";
 
 async function install(action: Action) {
   // Download source
@@ -49,6 +50,9 @@ async function install(action: Action) {
     `${globals.parse.final_bin_location}/${action.provides.name}`,
     `${globals.static.bin_location}/${action.provides.name}`
   );
+
+  // Cleanup
+  await cleanupInstall(action);
 }
 
 export { install };
