@@ -17,7 +17,7 @@ bash)
   fi
   ;;
 zsh)
-  HOME_FILE="$HOME"/Desktop/test.txt
+  HOME_FILE="$HOME"/.zshrc
 
   if grep -Fqx "$PATH_EXPORT" "$HOME_FILE"; then
     # Do nothing

@@ -43,6 +43,12 @@ async function install(action: Action) {
     `${globals.parse.interpolated_binloc}${action.provides.name}`,
     `${globals.parse.final_bin_location}/${action.provides.name}`
   );
+
+  // Symlink to bin
+  await Deno.symlink(
+    `${globals.parse.final_bin_location}/${action.provides.name}`,
+    `${globals.static.bin_location}/${action.provides.name}`
+  );
 }
 
 export { install };
