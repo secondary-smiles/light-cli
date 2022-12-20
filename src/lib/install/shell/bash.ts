@@ -3,6 +3,7 @@ import { logger } from "logger";
 
 import { Prompt } from "lib/util/interact/types.ts";
 import { promptUser } from "lib/util/interact/prompt.ts";
+import {displayBashScript} from "./display.ts";
 
 async function runAsBash(cwd: string, bash: string) {
   logger.verbose(cwd, bash);
@@ -22,9 +23,7 @@ async function runAsBash(cwd: string, bash: string) {
 
   const view: Prompt = {
     key: "v",
-    run: () => {
-      console.log("viewing");
-    },
+    run: () => displayBashScript("unverified bash script", bash),
     recursive: true,
   };
 
