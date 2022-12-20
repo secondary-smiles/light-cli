@@ -15,6 +15,7 @@ async function isCached(program: Program, action: Action) {
 
   for await (const item of Deno.readDir(dirloc)) {
     if (item.isDirectory /*TODO: && nameIsSemver(item.name)*/) {
+      // TODO: Check version
       for await (const subItem of Deno.readDir(dirloc + "/" + item.name)) {
         if (subItem.isFile && subItem.name == action.provides.name) {
           return true;

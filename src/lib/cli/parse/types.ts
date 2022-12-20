@@ -19,7 +19,7 @@ interface PreparsedArgs {
 interface ProgramCommands {
   source: string;
   program: string;
-  args?: string[];
+  args: string[];
 }
 
 export type { PreparsedArgs, ProgramCommands, Program, CommandGroup };

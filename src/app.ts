@@ -15,6 +15,7 @@ import { isAction } from "lib/toml/action/valid.ts";
 import { interpolateAction } from "lib/toml/action/interpolates.ts";
 import { isCached } from "lib/local/run/cached.ts";
 import { install } from "lib/install/mod.ts";
+import { runProgram } from "lib/local/run/run.ts";
 
 async function main() {
   const program = parse();
@@ -47,6 +48,7 @@ async function main() {
   if (await isCached(program, action as unknown as Action)) {
     console.log("cached");
     // TODO: Run from cache
+    await runProgram(program, action as unknown as Action);
     return;
   }
 
