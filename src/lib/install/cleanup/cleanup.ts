@@ -1,4 +1,5 @@
 import { globals } from "globals";
+import { logger } from "logger";
 
 import { Action } from "lib/toml/action/types.ts";
 import { pathExists } from "lib/file/exists.ts";
@@ -21,7 +22,8 @@ async function cleanupRun(program: Program) {
 }
 
 async function deletePath(path: string) {
-  if (!(await pathExists(path))) return;
+  logger.verbose(path);
+  // if (!(await pathExists(path))) return;
   await Deno.remove(path, { recursive: true });
 }
 

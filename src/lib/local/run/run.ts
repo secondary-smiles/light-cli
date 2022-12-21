@@ -32,7 +32,6 @@ async function runProgram(program: Program) {
 
   const process = await Deno.run(command);
   const status = await process.status();
-  logger.verbose(status);
 
   return status;
 }

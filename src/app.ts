@@ -48,19 +48,22 @@ async function main() {
   action = interpolateAction(action);
   logger.verbose(action);
 
+  let status: Deno.ProcessStatus = {
+    success: true,
+    code: 0,
+  };
   if (await isCached(program, action)) {
     // TODO: Run from cache
     await runProgram(program);
-    return;
+  } else {
+    // TODO: Install Deps
+    action.dependencies.forEach((dep) => {});
+
+    await install(action);
+
+    status = await runProgram(program);
+    logger.verbose(status);
   }
-
-  // TODO: Install Deps
-  action.dependencies.forEach((dep) => {});
-
-  await install(action);
-
-  const status = await runProgram(program);
-  console.log(status)
 
   // Cleanup
   await cleanupRun(program);
