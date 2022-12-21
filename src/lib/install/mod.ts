@@ -4,13 +4,14 @@ import { logger } from "logger";
 import { ensureDir } from "fs/mod.ts";
 
 import { Action } from "lib/toml/action/types.ts";
-import { Program } from "lib/cli/parse/types.ts";
 
 import { fetchSource } from "lib/remote/net/fetchSource.ts";
 import { decompress } from "lib/file/decompress.ts";
 import { runAsBash } from "./shell/bash.ts";
+import { symlink } from "lib/file/symlink.ts";
+import { cleanupInstall } from "lib/install/cleanup/cleanup.ts";
 
-async function install(action: Action, program: Program) {
+async function install(action: Action) {
   // Download source
   await fetchSource(action.provides.source);
   // Unzip source
@@ -46,10 +47,13 @@ async function install(action: Action, program: Program) {
   );
 
   // Symlink to bin
-  await Deno.symlink(
+  symlink(
     `${globals.parse.final_bin_location}/${action.provides.name}`,
     `${globals.static.bin_location}/${action.provides.name}`
   );
+
+  // Cleanup
+  await cleanupInstall(action);
 }
 
 export { install };

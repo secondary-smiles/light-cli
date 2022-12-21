@@ -3,11 +3,10 @@ import { globals } from "globals";
 import { Problem } from "error";
 
 import { Program } from "lib/cli/parse/types.ts";
-import { Action } from "lib/toml/action/types.ts";
 import { pathExists } from "lib/file/exists.ts";
 
-async function runProgram(program: Program, action: Action) {
-  const programloc = `${globals.static.wd_location}/${program.program.source}/${action.provides.name}/${globals.parse.interpolated_version}`;
+async function runProgram(program: Program) {
+  const programloc = `${globals.static.wd_location}/${program.program.source}/${program.program.program}/${globals.parse.interpolated_version}`;
   logger.verbose(programloc);
 
   if (!(await pathExists(programloc + `/${program.program.program}`))) {
@@ -21,8 +20,11 @@ async function runProgram(program: Program, action: Action) {
   }
 
   const command: Deno.RunOptions = {
-    cwd: programloc,
-    cmd: [`./${program.program.program}`, ...program.program.args],
+    cwd: Deno.cwd(),
+    cmd: [
+      `${globals.parse.final_bin_location}/${program.program.program}`,
+      ...program.program.args,
+    ],
     stdin: "inherit",
     stdout: "inherit",
     stderr: "inherit",
@@ -30,14 +32,9 @@ async function runProgram(program: Program, action: Action) {
 
   const process = await Deno.run(command);
   const status = await process.status();
+  logger.verbose(status);
 
-  evalRun(status);
-}
-
-function evalRun(status: Deno.ProcessStatus) {
-  if (!status.success) {
-    Deno.exit(status.code);
-  }
+  return status;
 }
 
 export { runProgram };

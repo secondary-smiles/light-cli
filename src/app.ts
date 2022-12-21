@@ -16,7 +16,7 @@ import { isCached } from "lib/local/run/cached.ts";
 import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
 import { isAction } from "./lib/toml/action/valid.ts";
-import { cleanupInstall } from "lib/util/cleanup/cleanup.ts";
+import { cleanupRun } from "lib/install/cleanup/cleanup.ts";
 
 async function main() {
   const program = parse();
@@ -50,20 +50,26 @@ async function main() {
 
   if (await isCached(program, action)) {
     // TODO: Run from cache
-    await runProgram(program, action);
+    await runProgram(program);
     return;
   }
 
   // TODO: Install Deps
   action.dependencies.forEach((dep) => {});
 
-  await install(action, program);
-  logger.verbose(globals);
+  await install(action);
 
-  await runProgram(program, action);
+  const status = await runProgram(program);
+  console.log(status)
 
   // Cleanup
-  await cleanupInstall(action, program);
+  await cleanupRun(program);
+
+  logger.verbose(globals);
+
+  if (!status.success) {
+    Deno.exit(status.code);
+  }
 }
 
 await main().catch((err) => {
