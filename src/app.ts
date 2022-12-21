@@ -15,6 +15,7 @@ import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
 import { cleanupRun } from "lib/install/cleanup/cleanup.ts";
 import { getActionFromLink } from "./lib/coordinate/file/link.ts";
+import { interpolateAction } from "lib/toml/action/interpolates.ts";
 
 async function main() {
   const program = parse();
@@ -54,6 +55,7 @@ async function main() {
       await install(depAction);
     }
 
+    interpolateAction(action);
     await install(action);
 
     status = await runProgram(program);
