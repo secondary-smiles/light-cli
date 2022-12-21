@@ -26,6 +26,7 @@ interface ParseGlobals {
   interpolated_binloc: string;
   interpolated_this_program: string;
   final_bin_location: string;
+  current_source: string;
 }
 
 // Globals that commands set
@@ -56,6 +57,7 @@ const parseGlobals: ParseGlobals = {
   interpolated_binloc: "",
   interpolated_this_program: "",
   final_bin_location: "",
+  current_source: "",
 };
 
 const commandGlobals: CommandGlobals = {

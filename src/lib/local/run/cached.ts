@@ -6,7 +6,7 @@ import { Program } from "lib/cli/parse/types.ts";
 import { pathExists } from "lib/file/exists.ts";
 
 async function isCached(program: Program, action: Action) {
-  const dirloc = `${globals.static.home}/${program.program.source}/${action.provides.name}`;
+  const dirloc = `${globals.static.home}/${globals.parse.current_source}/${action.provides.name}`;
   logger.verbose(dirloc);
 
   globals.parse.final_bin_location =

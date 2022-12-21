@@ -24,6 +24,8 @@ async function main() {
   // Verbose only works after this point because actual global verbosity is set once commands are run
   logger.verbose(program);
 
+  globals.parse.current_source = program.program.source;
+
   const provides = await fetchToml(program.program.source);
   logger.verbose(provides);
   if (!isProvides(provides)) {
@@ -58,7 +60,11 @@ async function main() {
       }
     }
 
+    // Reset Globals
     interpolateAction(action);
+    globals.parse.current_source = program.program.source;
+    await isCached(program, action);
+
     await install(action);
 
     status = await runProgram(program);
