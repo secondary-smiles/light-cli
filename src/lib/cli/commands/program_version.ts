@@ -14,7 +14,12 @@ function run(data: string) {
   if (typeof data == "string") {
     globals.command.program_version = data;
   } else {
-    throw new Problem(`${data} is not a valid semver`);
+    try {
+      // @ts-ignore: Try toString() in case Deno.parse returns number or other compatible value
+      globals.command.program_version = data.toString();
+    } catch (_) {
+      throw new Problem(`'${data}' is not a valid semver`);
+    }
   }
 }
 

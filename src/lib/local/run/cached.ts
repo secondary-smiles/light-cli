@@ -6,9 +6,7 @@ import { Program } from "lib/cli/parse/types.ts";
 import { pathExists } from "lib/file/exists.ts";
 
 async function isCached(program: Program, action: Action) {
-  const dirloc = `${globals.static.home}/${program.program.source}/${
-    action.provides.name
-  }`;
+  const dirloc = `${globals.static.home}/${program.program.source}/${action.provides.name}`;
   logger.verbose(dirloc);
 
   globals.parse.final_bin_location =
@@ -19,7 +17,10 @@ async function isCached(program: Program, action: Action) {
   }
 
   for await (const item of Deno.readDir(dirloc)) {
-    if (item.isDirectory /*TODO: && nameIsSemver(item.name)*/) {
+    if (
+      item.isDirectory /*TODO: && nameIsSemver(item.name)*/ &&
+      item.name == globals.parse.interpolated_version
+    ) {
       // TODO: Check version
       for await (const subItem of Deno.readDir(dirloc + "/" + item.name)) {
         if (subItem.isFile && subItem.name == action.provides.name) {
