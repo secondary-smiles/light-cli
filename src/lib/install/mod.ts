@@ -27,14 +27,16 @@ async function install(action: Action) {
   // Run install cmd
   await runAsBash(
     globals.parse.interpolated_this_program + "/raw/decompress",
-    action.provides.install.cmd
+    action.provides.install.cmd,
+    "install script"
   );
 
   logger.load(`testing '${action.provides.name}'`);
   // run test cmd
   await runAsBash(
     globals.parse.interpolated_binloc,
-    action.provides.install.test
+    action.provides.install.test,
+    "test script"
   );
 
   logger.stopLoad();

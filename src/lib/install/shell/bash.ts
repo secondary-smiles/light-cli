@@ -8,7 +8,7 @@ import { Prompt } from "lib/util/interact/types.ts";
 import { promptUser } from "lib/util/interact/prompt.ts";
 import { displayBashScript } from "./display.ts";
 
-async function runAsBash(cwd: string, bash: string) {
+async function runAsBash(cwd: string, bash: string, stage: string="unverified bash script") {
   logger.verbose(cwd, bash);
 
   ensureDir(cwd);
@@ -28,12 +28,12 @@ async function runAsBash(cwd: string, bash: string) {
 
   const view: Prompt = {
     key: "v",
-    run: () => displayBashScript("unverified bash script", bash),
+    run: () => displayBashScript(stage, bash),
     recursive: true,
   };
 
   const option = promptUser(
-    "program requires running an untested bash script\n[r]un, [c]ancel, [v]iew",
+    `program requires running '${stage}'\n[r]un, [c]ancel, [v]iew`,
     [run, cancel, view]
   );
   if (!option) {
