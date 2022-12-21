@@ -46,7 +46,7 @@ function interpolateBinloc(action: Action) {
   globals.parse.interpolated_this_program = progloc;
 
   globals.parse.interpolated_sourceloc = progloc + "/raw";
-  globals.parse.interpolated_binloc = progloc + "/bin/";
+  globals.parse.interpolated_binloc = progloc + "/bin";
 
   action.provides.install.cmd = action.provides.install.cmd
     .split("{{binloc}}")

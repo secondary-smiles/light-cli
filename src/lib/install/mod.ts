@@ -44,7 +44,7 @@ async function install(action: Action) {
   // Move to final binloc
   await ensureDir(globals.parse.final_bin_location);
   await Deno.copyFile(
-    `${globals.parse.interpolated_binloc}${action.provides.name}`,
+    `${globals.parse.interpolated_binloc}/${action.provides.name}`,
     `${globals.parse.final_bin_location}/${action.provides.name}`
   );
 
