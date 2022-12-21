@@ -11,12 +11,12 @@ async function cleanupInstall(action: Action) {
   await deletePath(wd_location);
 }
 
-async function cleanupRun(program: Program) {
+async function cleanupRun(action: Action) {
   if (globals.command.destroy) {
-    const sourcelocation = `${globals.static.home}/${program.program.source}`;
+    const sourcelocation = `${globals.static.home}/${action.provides.name}`;
     await deletePath(sourcelocation);
 
-    const linklocation = `${globals.static.bin_location}/${program.program.program}`;
+    const linklocation = `${globals.static.bin_location}/${action.provides.name}`;
     await deletePath(linklocation);
   }
 }

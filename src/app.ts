@@ -52,7 +52,10 @@ async function main() {
       logger.verbose(dep);
 
       const depAction = await getActionFromLink(dep, false);
-      await install(depAction);
+
+      if (!(await isCached(program, depAction))) {
+        await install(depAction);
+      }
     }
 
     interpolateAction(action);
@@ -60,11 +63,18 @@ async function main() {
 
     status = await runProgram(program);
     logger.verbose(status);
+
+    await cleanupInstall(action);
+
+    for (const dep of action.dependencies) {
+      const depAction = await getActionFromLink(dep, false);
+      await cleanupInstall(depAction);
+      await cleanupRun(depAction);
+    }
   }
 
   // Cleanup
-  await cleanupRun(program);
-  await cleanupInstall(action);
+  await cleanupRun(action);
 
   logger.verbose(globals);
 
