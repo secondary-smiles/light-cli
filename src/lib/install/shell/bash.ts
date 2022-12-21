@@ -61,7 +61,7 @@ async function runAsBash(cwd: string, bash: string, stage: string="unverified ba
   logger.stopLoad();
 
   if (!status.success) {
-    throw new Problem(`bash script exited with status '${status.code}'`);
+    throw new Problem(`bash script exited with status`, status.code);
   }
 }
 

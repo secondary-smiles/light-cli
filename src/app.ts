@@ -76,5 +76,6 @@ async function main() {
 }
 
 await main().catch((err) => {
+  logger.verbose(globals)
   log_error(err);
 });
