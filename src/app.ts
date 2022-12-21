@@ -17,6 +17,7 @@ import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
 import { isAction } from "./lib/toml/action/valid.ts";
 import { cleanupRun } from "lib/install/cleanup/cleanup.ts";
+import { getActionFromLink } from "./lib/coordinate/file/link.ts";
 
 async function main() {
   const program = parse();
@@ -37,15 +38,7 @@ async function main() {
   );
   logger.verbose(link);
 
-  const actionData = await fetchToml(link.source);
-  logger.verbose(actionData);
-  if (!isAction(actionData)) {
-    throw new Problem("received action file is invalid");
-  }
-
-  let action: Action = actionData as unknown as Action;
-
-  action = interpolateAction(action);
+  const action = await getActionFromLink(link);
   logger.verbose(action);
 
   let status: Deno.ProcessStatus = {
@@ -57,7 +50,10 @@ async function main() {
     await runProgram(program);
   } else {
     // TODO: Install Deps
-    action.dependencies.forEach((dep) => {});
+    for (const dep of action.dependencies) {
+      const depAction = await getActionFromLink(dep);
+      await install(depAction);
+    }
 
     await install(action);
 
@@ -76,6 +72,6 @@ async function main() {
 }
 
 await main().catch((err) => {
-  logger.verbose(globals)
+  logger.verbose(globals);
   log_error(err);
 });
