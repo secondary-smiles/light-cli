@@ -13,7 +13,7 @@ import { getLinkFromProvides } from "lib/toml/provides/util/links.ts";
 import { isCached } from "lib/local/run/cached.ts";
 import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
-import { cleanupRun } from "lib/install/cleanup/cleanup.ts";
+import { cleanupRun, cleanupInstall } from "lib/install/cleanup/cleanup.ts";
 import { getActionFromLink } from "./lib/coordinate/file/link.ts";
 import { interpolateAction } from "lib/toml/action/interpolates.ts";
 
@@ -64,6 +64,7 @@ async function main() {
 
   // Cleanup
   await cleanupRun(program);
+  await cleanupInstall(action);
 
   logger.verbose(globals);
 

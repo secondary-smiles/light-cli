@@ -53,9 +53,6 @@ async function install(action: Action) {
     `${globals.parse.final_bin_location}/${action.provides.name}`,
     `${globals.static.bin_location}/${action.provides.name}`
   );
-
-  // Cleanup
-  await cleanupInstall(action);
 }
 
 export { install };
