@@ -6,7 +6,7 @@ import { Program } from "lib/cli/parse/types.ts";
 import { pathExists } from "lib/file/exists.ts";
 
 async function isCached(program: Program, action: Action) {
-  const dirloc = `${Deno.env.get("HOME")}/.light/${program.program.source}/${
+  const dirloc = `${globals.static.home}/${program.program.source}/${
     action.provides.name
   }`;
   logger.verbose(dirloc);

@@ -16,6 +16,7 @@ import { isCached } from "lib/local/run/cached.ts";
 import { install } from "lib/install/mod.ts";
 import { runProgram } from "lib/local/run/run.ts";
 import { isAction } from "./lib/toml/action/valid.ts";
+import { cleanupInstall } from "lib/util/cleanup/cleanup.ts";
 
 async function main() {
   const program = parse();
@@ -56,10 +57,13 @@ async function main() {
   // TODO: Install Deps
   action.dependencies.forEach((dep) => {});
 
-  await install(action as unknown as Action);
+  await install(action, program);
   logger.verbose(globals);
 
-  await runProgram(program, action as unknown as Action);
+  await runProgram(program, action);
+
+  // Cleanup
+  await cleanupInstall(action, program);
 }
 
 await main().catch((err) => {
